@@ -45,5 +45,30 @@ def platos():
 
     return jsonify(data), 200
 
+@app.route('/login/<username>', methods = ['GET'])
+def get_password(username):
+    '''Devuelve la contraseña del usuario pasado por la ruta en formato de string'''
+
+
+    conn = engine.connect()
+    query = f"SELECT password FROM users_test WHERE username = '{username}';"
+
+    try:
+        result = conn.execute(text(query))
+        #Se hace commit de la consulta (acá no estoy seguro si es necesario para un select, sí es necesario para un insert!)
+        conn.close() #Cerramos la conexion con la base de datos
+    except SQLAlchemyError as err:
+        return jsonify(str(err.__cause__))
+    
+    #Se preparan los datos para ser mostrador como json
+
+    for row in result:
+        entity = {}
+        entity['password'] = row.password
+        
+    return jsonify(entity['password']), 200
+
+
+
 if __name__ == "__main__":
     app.run("127.0.0.1", port="5000", debug=True)
