@@ -25,30 +25,29 @@
 	<meta name="twitter:url" content="" />
 	<meta name="twitter:card" content="" />
 
-	<link href="https://fonts.googleapis.com/css?family=Lato:300,400,700" rel="stylesheet">
-	<link href="https://fonts.googleapis.com/css?family=Kaushan+Script" rel="stylesheet">
-	
 	<!-- Animate.css -->
-	<link rel="stylesheet" href="static/css/animate.css">
+	<link rel="stylesheet" href="{{ url_for('static', filename='/css/animate.css', _external=True) }}">
 	<!-- Icomoon Icon Fonts-->
-	<link rel="stylesheet" href="static/css/icomoon.css">
+	<link rel="stylesheet" href="{{ url_for('static', filename='/css/icomoons', _external=True) }}">
 	<!-- Themify Icons-->
-	<link rel="stylesheet" href="static/css/themify-icons.css">
+	<link rel="stylesheet" href="{{ url_for('static', filename='/css/themify-icons.css', _external=True) }}">
 	<!-- Bootstrap  -->
-	<link rel="stylesheet" href="static/css/bootstrap.css">
+	<link rel="stylesheet" href="{{ url_for('static', filename='/css/bootstrap.css', _external=True) }}">
 
 	<!-- Magnific Popup -->
-	<link rel="stylesheet" href="static/css/magnific-popup.css">
+	<link rel="stylesheet" href="{{ url_for('static', filename='/css/magnific-popup.css', _external=True) }}">
 
 	<!-- Bootstrap DateTimePicker -->
-	<link rel="stylesheet" href="static/css/bootstrap-datetimepicker.min.css">
+	<link rel="stylesheet" href="{{ url_for('static', filename='/css/bootstrap-datetimepicker.min.css', _external=True) }}">
+
+
 
 	<!-- Owl Carousel  -->
-	<link rel="stylesheet" href="static/css/owl.carousel.min.css">
-	<link rel="stylesheet" href="static/css/owl.theme.default.min.css">
+	<link rel="stylesheet" href="{{ url_for('static', filename='/css/owl.carousel.min.css', _external=True) }}">
+	<link rel="stylesheet" href="{{ url_for('static', filename='/css/owl.theme.default.min.css', _external=True) }}">
 
 	<!-- Theme style  -->
-	<link rel="stylesheet" href="static/css/style.css">
+	<link rel="stylesheet" href="{{ url_for('static', filename='/css/style.css', _external=True) }}">
 
 	<!-- Modernizr JS -->
 	<script src="static/js/modernizr-2.6.2.min.js"></script>
@@ -66,32 +65,32 @@
 
 	
 	<!-- <div class="page-inner"> -->
-	<nav class="gtco-nav" role="navigation">
-		<div class="gtco-container">
-			
-			<div class="row">
-				<div class="col-sm-4 col-xs-12">
-					<div id="gtco-logo"><a href="templates/index.html">Savory <em>.</em></a></div>
+		<nav class="gtco-nav" role="navigation">
+			<div class="gtco-container">
+				
+				<div class="row">
+					<div class="col-sm-4 col-xs-12">
+						<div id="gtco-logo"><a href="{{ url_for('index') }}">Savory <em>.</em></a></div>
+					</div>
+					<div class="col-xs-8 text-right menu-1">
+						<ul>
+							<li class="active"><a href="{{ url_for('menu') }}">Menu</a></li>
+							<li class="has-dropdown">
+								<a href="{{url_for ('services') }}">Services</a>
+								<ul class="dropdown">
+									<li><a href="#">Food Catering</a></li>
+									<li><a href="#">Wedding Celebration</a></li>
+									<li><a href="#">Birthday's Celebration</a></li>
+								</ul>
+							</li>
+							<li><a href="{{ url_for('contact') }}">Contact</a></li>
+							<li class="btn-cta"><a href="#"><span>Reservation</span></a></li>
+						</ul>	
+					</div>
 				</div>
-				<div class="col-xs-8 text-right menu-1">
-					<ul>
-						<li><a href="templates/menu.html">Menu</a></li>
-						<li class="has-dropdown">
-							<a href="templates/services.html">Services</a>
-							<ul class="dropdown">
-								<li><a href="#">Food Catering</a></li>
-								<li><a href="#">Wedding Celebration</a></li>
-								<li><a href="#">Birthday's Celebration</a></li>
-							</ul>
-						</li>
-						<li><a href="templates/contact.html">Contact</a></li>
-						<li class="btn-cta"><a href="#"><span>Reservation</span></a></li>
-					</ul>	
-				</div>
+				
 			</div>
-			
-		</div>
-	</nav>
+		</nav>
 	
 	<header id="gtco-header" class="gtco-cover gtco-cover-md" role="banner" style="background-image: url(images/img_bg_1.jpg)" data-stellar-background-ratio="0.5">
 		<div class="overlay"></div>
