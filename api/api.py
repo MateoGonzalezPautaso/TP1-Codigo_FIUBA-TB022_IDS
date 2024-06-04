@@ -47,7 +47,8 @@ def platos():
 
 @app.route('/login/<username>', methods = ['GET'])
 def get_password(username):
-    '''Devuelve la contraseña del usuario pasado por la ruta en formato de string'''
+    '''Devuelve la contraseña del usuario pasado por la ruta en formato de string.
+    En caso de que el usuario no exista en la base de datos devuelve una cadena vacia'''
 
 
     conn = engine.connect()
@@ -55,18 +56,19 @@ def get_password(username):
 
     try:
         result = conn.execute(text(query))
-        #Se hace commit de la consulta (acá no estoy seguro si es necesario para un select, sí es necesario para un insert!)
-        conn.close() #Cerramos la conexion con la base de datos
+        row = result.fetchone()     # Obtengo solo 1 fila, porque los usuarios son unicos en la database
+        conn.close()
     except SQLAlchemyError as err:
-        return jsonify(str(err.__cause__))
+        return jsonify(str(err.__cause__)), 500     #Hubo un problema para tirar la query
     
-    #Se preparan los datos para ser mostrador como json
+    if not row:
+        return jsonify(""),200
+       
+    else:
+        return jsonify(row[0])      # Devuelvo un json con el primer (y unico) elemento de la row que es la password
+            
 
-    for row in result:
-        entity = {}
-        entity['password'] = row.password
-        
-    return jsonify(entity['password']), 200
+    
 
 
 
