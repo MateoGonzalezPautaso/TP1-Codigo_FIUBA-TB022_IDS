@@ -58,6 +58,11 @@ a:hover, a:active, a:focus {
   text-decoration: none;
 }
 
+.social-icons {
+  width: 20px;
+  height: 20px;
+}
+
 p {
   margin-bottom: 20px;
 }
