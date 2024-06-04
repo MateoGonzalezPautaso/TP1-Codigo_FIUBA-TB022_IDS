@@ -1,4 +1,5 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, request, render_template, redirect, url_for, flash
+import requests
 
 
 app = Flask(__name__)
@@ -19,6 +20,11 @@ def services():
 def contact():
     return render_template('contact.html')
 
+@app.errorhandler(404)
+def page_not_found(e):
+    return render_template('404.html'), 404
+
+
 
 if __name__ == "__main__":
-	app.run("127.0.0.1", port="5000", debug=True)
+    app.run("127.0.0.1", port="8080", debug=True)
