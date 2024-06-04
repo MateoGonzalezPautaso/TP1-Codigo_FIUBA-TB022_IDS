@@ -37,14 +37,10 @@
 	<link rel="stylesheet" href="{{ url_for('static', filename='/css/themify-icons.css', _external=True) }}">
 	<!-- Bootstrap  -->
 	<link rel="stylesheet" href="{{ url_for('static', filename='/css/bootstrap.css', _external=True) }}">
-
 	<!-- Magnific Popup -->
 	<link rel="stylesheet" href="{{ url_for('static', filename='/css/magnific-popup.css', _external=True) }}">
-
 	<!-- Bootstrap DateTimePicker -->
 	<link rel="stylesheet" href="{{ url_for('static', filename='/css/bootstrap-datetimepicker.min.css', _external=True) }}">
-
-
 
 	<!-- Owl Carousel  -->
 	<link rel="stylesheet" href="{{ url_for('static', filename='/css/owl.carousel.min.css', _external=True) }}">
@@ -55,10 +51,6 @@
 
 	<!-- Modernizr JS -->
 	<script src="static/js/modernizr-2.6.2.min.js"></script>
-	<!-- FOR IE9 below -->
-	<!--[if lt IE 9]>
-	<script src="js/respond.min.js"></script>
-	<![endif]-->
 
 	</head>
 	<body>
@@ -66,7 +58,6 @@
 	<div class="gtco-loader"></div>
 	
 	<div id="page">
-
 	
 	<!-- <div class="page-inner"> -->
 	<nav class="gtco-nav" role="navigation">
@@ -74,21 +65,13 @@
 			
 			<div class="row">
 				<div class="col-sm-4 col-xs-12">
-					<div id="gtco-logo"><a href="{{url_for('index')}}">Savory <em>.</em></a></div>
+					<div id="gtco-logo"><a href="{{ url_for('index') }}">Savory <em>.</em></a></div>
 				</div>
 				<div class="col-xs-8 text-right menu-1">
 					<ul>
-						<li class="active"><a href="{{url_for('menu')}}">Menu</a></li>
-						<li class="has-dropdown">
-							<a href="{{url_for('services')}}">Services</a>
-							<ul class="dropdown">
-								<li><a href="#">Food Catering</a></li>
-								<li><a href="#">Wedding Celebration</a></li>
-								<li><a href="#">Birthday's Celebration</a></li>
-							</ul>
-						</li>
-						<li><a href="{{url_for('contact')}}">Contact</a></li>
-						<li class="btn-cta"><a href="#"><span>Reservation</span></a></li>
+						<li class="active"><a href="{{ url_for('menu') }}">Menu</a></li>
+						<li class="has-dropdown"><a href="{{ url_for('services') }}">Services</a></li>
+						<li><a href="{{ url_for('contact') }}">Contact</a></li>
 					</ul>	
 				</div>
 			</div>
@@ -100,30 +83,24 @@
 {% endblock %}
 
 
-<footer id="gtco-footer" role="contentinfo" style="background-image: url(images/img_bg_1.jpg)" data-stellar-background-ratio="0.5">
+<footer id="gtco-footer" role="contentinfo" style="background-image: url(static/images/img_bg_1.jpg)" data-stellar-background-ratio="0.5">
     <div class="overlay"></div>
     <div class="gtco-container">
         <div class="row row-pb-md">
-
-            
-
             
             <div class="col-md-12 text-center">
                 <div class="gtco-widget">
-                    <h3>Get In Touch</h3>
+                    <h3>Contactanos</h3>
                     <ul class="gtco-quick-contact">
                         <li><a href="#"><i class="icon-phone"></i> +1 234 567 890</a></li>
-                        <li><a href="#"><i class="icon-mail2"></i> info@GetTemplates.co</a></li>
-                        <li><a href="#"><i class="icon-chat"></i> Live Chat</a></li>
+                        <li><a href="#"><i class="icon-mail2"></i> recetas_fiuba@fi.uba.ar</a></li>
+                        <li><a href="#"><i class="icon-location"></i>Facultad de Ingenieria UBA</a></li>
                     </ul>
                 </div>
                 <div class="gtco-widget">
-                    <h3>Get Social</h3>
+                    <h3>Redes sociales</h3>
                     <ul class="gtco-social-icons">
-                        <li><a href="#"><i class="icon-twitter"></i></a></li>
-                        <li><a href="#"><i class="icon-facebook"></i></a></li>
-                        <li><a href="#"><i class="icon-linkedin"></i></a></li>
-                        <li><a href="#"><i class="icon-dribbble"></i></a></li>
+                        <li><a href="https://github.com/MateoGonzalezPautaso/TP1-Codigo_FIUBA-TB022_IDS"><i class="icon-github"></i></a></li>
                     </ul>
                 </div>
             </div>
