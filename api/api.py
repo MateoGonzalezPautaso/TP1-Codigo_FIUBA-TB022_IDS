@@ -74,6 +74,10 @@ def get_password(username):
     conn = engine.connect() # Creamos la conexión con la base de datos
     query = f"SELECT password FROM usuarios WHERE username = '{username}';" # Generamos la query para obtener la contraseña del usuario
 
+
+    conn = engine.connect()
+    query = f"SELECT password FROM usuarios WHERE username = '{username}';"
+
     try:
         result = conn.execute(text(query)) # Usamos text para poder usar un string como query y que execute la interprete
         row = result.fetchone() # Obtenemos solo 1 fila, porque los usuarios son unicos en la database
@@ -90,6 +94,8 @@ def get_password(username):
 
 
 
+        return jsonify(row[0])      # Devuelvo un json con el primer (y unico) elemento de la row que es la password
+            
 
 if __name__ == "__main__":
     app.run("127.0.0.1", port="5000", debug=True)
