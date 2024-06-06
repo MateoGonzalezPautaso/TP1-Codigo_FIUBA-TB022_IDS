@@ -3,7 +3,7 @@ services:
     image: mysql
     restart: always
     ports:
-      - '3000:5000'
+      - '3306:3306'
     environment:
       MYSQL_DATABASE: tp_ids
       MYSQL_ROOT_PASSWORD: codigofiuba

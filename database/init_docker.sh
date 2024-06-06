@@ -1,3 +1,3 @@
 #!/bin/bash
-cd docker
+cd docker || exit
 docker-compose up --build -d
