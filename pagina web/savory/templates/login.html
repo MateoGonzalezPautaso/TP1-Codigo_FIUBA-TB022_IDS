@@ -30,11 +30,11 @@
 				<div class="col-md-12">
 					<div class="col-md-6 animate-box">
 					<h3>Inicio de sesión:</h3>
-					<form action="#">
+					<form action="{{ url_for('contact')}}" method='post'>
 						<div class="row form-group">
 							<div class="col-md-12">
 								<label class="sr-only" for="username">Username</label>
-								<input type="text" id="username" class="form-control" placeholder="Nombre de usuario">
+								<input type="text" name="username_form" class="form-control" placeholder="Nombre de usuario">
 							</div>
 							
 						</div>
@@ -42,7 +42,7 @@
 						<div class="row form-group">
 							<div class="col-md-12">
 								<label class="sr-only" for="password">Contraseña</label>
-								<input type="text" id="password" class="form-control" placeholder="Contraseña">
+								<input type="password" name="password_form" class="form-control" placeholder="Contraseña">
 							</div>
 						</div>
 						<div class="form-group">
