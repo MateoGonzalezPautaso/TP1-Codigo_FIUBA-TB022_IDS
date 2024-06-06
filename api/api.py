@@ -9,9 +9,9 @@ app = Flask(__name__)
 
 # Parametros de conexion
 USUARIO = "root"
-CONTRASEÑA = "lanzillotta"
+CONTRASEÑA = "codigofiuba"
 HOST = "localhost"
-DATABASE = "introds"
+DATABASE = "tp_ids"
 
 
 URI = f"mysql+mysqlconnector://{USUARIO}:{CONTRASEÑA}@{HOST}/{DATABASE}"
@@ -52,7 +52,7 @@ def get_password(username):
 
 
     conn = engine.connect()
-    query = f"SELECT password FROM users_test WHERE username = '{username}';"
+    query = f"SELECT password FROM usuarios WHERE username = '{username}';"
 
     try:
         result = conn.execute(text(query))
@@ -67,10 +67,6 @@ def get_password(username):
     else:
         return jsonify(row[0])      # Devuelvo un json con el primer (y unico) elemento de la row que es la password
             
-
-    
-
-
 
 if __name__ == "__main__":
     app.run("127.0.0.1", port="5000", debug=True)
