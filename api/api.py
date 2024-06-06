@@ -94,8 +94,5 @@ def get_password(username):
 
 
 
-        return jsonify(row[0])      # Devuelvo un json con el primer (y unico) elemento de la row que es la password
-            
-
 if __name__ == "__main__":
     app.run("127.0.0.1", port="5000", debug=True)
