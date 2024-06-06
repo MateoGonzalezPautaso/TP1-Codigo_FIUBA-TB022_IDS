@@ -44,13 +44,14 @@ def platos():
 
     return jsonify(data), 200 # Devolvemos la informacion obtenida
 
-@app.route('/ingredientes', methods = ['GET'])
-def ingredientes():
+@app.route('/ingredientes/<lista_platos>', methods = ['GET'])
+def ingredientes(lista_platos):
     '''
     Devuelve el nombre e ingredientes de los platos para poder armar la lista de compra
+    PRECONDICION: lista_platos es una tupla de nombres de comidas
     '''
     conn = engine.connect() # Creamos la conexión con la base de datos
-    query = "SELECT nombre, ingredientes FROM recetas;" # Generamos la query para obtener los nombres e ingredientes de las recetas
+    query = f"SELECT ingredientes FROM recetas WHERE nombre in {lista_platos};" # Generamos la query para obtener los nombres e ingredientes de las recetas
 
     try:
         result = conn.execute(text(query)) # Usamos text para poder usar un string como query y que execute la interprete
