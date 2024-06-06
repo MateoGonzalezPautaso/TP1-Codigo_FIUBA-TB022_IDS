@@ -28,7 +28,12 @@
 
 	<link href="https://fonts.googleapis.com/css?family=Lato:300,400,700" rel="stylesheet">
 	<link href="https://fonts.googleapis.com/css?family=Kaushan+Script" rel="stylesheet">
+
+	{% block head %}
+	<link rel="shortcut icon" href=" {{ url_for('static', filename='/images/favicon.ico') }}">
+	{% endblock %}
 	
+
 	<!-- Animate.css -->
 	<link rel="stylesheet" href="{{ url_for('static', filename='/css/animate.css', _external=True) }}">
 	<!-- Icomoon Icon Fonts-->
