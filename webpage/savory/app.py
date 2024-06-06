@@ -31,8 +31,9 @@ def contact():
         # Realiza la solicitud a la API de backend
         api_url = f'http://127.0.0.1:5000/login/{username_form}'
         response = requests.get(api_url)
+        assignated_password = response.json()       # Contraseña asignada al usuario en la database
 
-        if password_form == response:
+        if password_form == assignated_password:
             return 'Acceso exitoso'
 
 
