@@ -33,7 +33,7 @@ def platos():
         conn.close() #Cerramos la conexion con la base de datos
 
     except SQLAlchemyError as err: # Agarramos cualquier excepcion que SQLAlchemy pueda tener
-        return jsonify(str(err.__cause__))
+        return jsonify(str(err.__cause__)), 500
     
     data = [] # Armamos una lista para agregar diccionarios con todos los datos
     for row in result: # Recorremos las lineas del resultado de la query
@@ -57,7 +57,7 @@ def ingredientes():
         conn.close() #Cerramos la conexion con la base de datos
 
     except SQLAlchemyError as err: # Agarramos cualquier excepcion que SQLAlchemy pueda tener
-        return jsonify(str(err.__cause__))
+        return jsonify(str(err.__cause__)), 500
     
     data = [] # Armamos una lista para agregar diccionarios con todos los datos
     for row in result: # Recorremos las lineas del resultado de la query
@@ -84,7 +84,7 @@ def get_password(username):
         conn.close() #Cerramos la conexion con la base de datos
 
     except SQLAlchemyError as err: # Agarramos cualquier excepcion que SQLAlchemy pueda tener
-        return jsonify(str(err.__cause__))
+        return jsonify(str(err.__cause__)), 500
     
     if not row:
         return jsonify(""), 200 # Si el usuario no existe, devuelve una cadena vacia
