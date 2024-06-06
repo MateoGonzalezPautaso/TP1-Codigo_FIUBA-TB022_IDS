@@ -33,7 +33,7 @@ def platos():
         conn.close() #Cerramos la conexion con la base de datos
 
     except SQLAlchemyError as err: # Agarramos cualquier excepcion que SQLAlchemy pueda tener
-        return jsonify(str(err.__cause__))
+        return jsonify(str(err.__cause__)), 500
     
     data = [] # Armamos una lista para agregar diccionarios con todos los datos
     for row in result: # Recorremos las lineas del resultado de la query
@@ -44,20 +44,21 @@ def platos():
 
     return jsonify(data), 200 # Devolvemos la informacion obtenida
 
-@app.route('/ingredientes', methods = ['GET'])
-def ingredientes():
+@app.route('/ingredientes/<lista_platos>', methods = ['GET'])
+def ingredientes(lista_platos):
     '''
     Devuelve el nombre e ingredientes de los platos para poder armar la lista de compra
+    PRECONDICION: lista_platos es una tupla de nombres de comidas
     '''
     conn = engine.connect() # Creamos la conexión con la base de datos
-    query = "SELECT nombre, ingredientes FROM recetas;" # Generamos la query para obtener los nombres e ingredientes de las recetas
+    query = f"SELECT ingredientes FROM recetas WHERE nombre in {lista_platos};" # Generamos la query para obtener los nombres e ingredientes de las recetas
 
     try:
         result = conn.execute(text(query)) # Usamos text para poder usar un string como query y que execute la interprete
         conn.close() #Cerramos la conexion con la base de datos
 
     except SQLAlchemyError as err: # Agarramos cualquier excepcion que SQLAlchemy pueda tener
-        return jsonify(str(err.__cause__))
+        return jsonify(str(err.__cause__)), 500
     
     data = [] # Armamos una lista para agregar diccionarios con todos los datos
     for row in result: # Recorremos las lineas del resultado de la query
@@ -84,7 +85,7 @@ def get_password(username):
         conn.close() #Cerramos la conexion con la base de datos
 
     except SQLAlchemyError as err: # Agarramos cualquier excepcion que SQLAlchemy pueda tener
-        return jsonify(str(err.__cause__))
+        return jsonify(str(err.__cause__)), 500
     
     if not row:
         return jsonify(""), 200 # Si el usuario no existe, devuelve una cadena vacia
