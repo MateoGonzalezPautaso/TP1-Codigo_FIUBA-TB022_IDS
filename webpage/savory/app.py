@@ -1,9 +1,11 @@
-from flask import Flask, request, render_template, redirect, url_for, send_from_directory
+from flask import Flask, request, render_template, redirect, url_for, send_from_directory, session
 import requests
 import os
 
 
 app = Flask(__name__)
+app.secret_key = 'secret_key_codigofiuba'       # La secret_key es necesaria para validar sesiones de usuarios
+
 
 @app.route('/')
 def index():
@@ -22,8 +24,8 @@ def menu():
 def services():
     return render_template('services.html')
 
-@app.route('/contact', methods = ['GET','POST'])
-def contact():
+@app.route('/login', methods = ['GET','POST'])
+def login():
     if request.method == 'POST':
         username_form = request.form.get('username_form')
         password_form = request.form.get('password_form')
@@ -34,10 +36,21 @@ def contact():
         assignated_password = response.json()       # Contraseña asignada al usuario en la database
 
         if password_form == assignated_password:
-            return 'Acceso exitoso'
+            session['authenticaded'] = True             # Autentica la sesion del usuario
+            return redirect(url_for('suggest',username=username_form))
 
 
     return render_template('login.html')
+
+@app.route('/suggest/<username>')
+def suggest(username):
+    if not session.get('authenticated'):            # Si la sesion no esta autenticada, lo devuelve al login
+        redirect(url_for('login'))
+
+    return f'Acceso exitoso. Bienvenido {username}'
+
+    # En esta funcion se va a usar el endpoint POST de la api
+
 
 @app.errorhandler(404)
 def page_not_found(e):
