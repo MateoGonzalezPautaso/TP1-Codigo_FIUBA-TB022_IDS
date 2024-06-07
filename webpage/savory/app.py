@@ -4,7 +4,7 @@ import os
 
 
 app = Flask(__name__)
-app.secret_key = 'secret_key_codigofiuba'       # La secret_key es necesaria para validar sesiones de usuarios
+app.secret_key = os.urandom(15)       # La secret_key es necesaria para validar sesiones de usuarios
 
 
 @app.route('/')
@@ -33,10 +33,10 @@ def login():
         # Realiza la solicitud a la API de backend
         api_url = f'http://127.0.0.1:5000/login/{username_form}'
         response = requests.get(api_url)
-        assignated_password = response.json()       # Contraseña asignada al usuario en la database
+        assigned_password = response.json()       # Contraseña asignada al usuario en la database
 
-        if password_form == assignated_password:
-            session['authenticaded'] = True             # Autentica la sesion del usuario
+        if password_form == assigned_password:
+            session['auth'] = True             # Autentica la sesion del usuario
             return redirect(url_for('suggest',username=username_form))
 
 
@@ -44,8 +44,8 @@ def login():
 
 @app.route('/suggest/<username>')
 def suggest(username):
-    if not session.get('authenticated'):            # Si la sesion no esta autenticada, lo devuelve al login
-        redirect(url_for('login'))
+    if not session.get('auth'):           # Si la sesion no esta autenticada, lo devuelve al login
+        return redirect(url_for('login'))
 
     return f'Acceso exitoso. Bienvenido {username}'
 
