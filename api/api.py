@@ -72,10 +72,7 @@ def ingredientes(lista_platos):
 def get_password(username):
     '''Devuelve la contraseña del usuario pasado por la ruta en formato de string.
     En caso de que el usuario no exista en la base de datos devuelve una cadena vacia'''
-    conn = engine.connect() # Creamos la conexión con la base de datos
-    query = f"SELECT password FROM usuarios WHERE username = '{username}';" # Generamos la query para obtener la contraseña del usuario
-
-
+   
     conn = engine.connect()
     query = f"SELECT password FROM usuarios WHERE username = '{username}';"
 
