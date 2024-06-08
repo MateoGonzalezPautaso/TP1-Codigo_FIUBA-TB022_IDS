@@ -36,7 +36,8 @@ def login():
         assigned_password = response.json()       # Contraseña asignada al usuario en la database
 
         if password_form == assigned_password:
-            session['auth'] = True             # Autentica la sesion del usuario
+            session['auth'] = True                  # Autentica la sesion del usuario
+            session['user'] = username_form          # Asigna el username autenticado en la sesion
             return redirect(url_for('suggest',username=username_form))
 
 
@@ -45,6 +46,9 @@ def login():
 @app.route('/suggest/<username>')
 def suggest(username):
     if not session.get('auth'):           # Si la sesion no esta autenticada, lo devuelve al login
+        return redirect(url_for('login'))
+    
+    if session.get('user') != username:         # Si el username no es igual al autenticado en la sesion, lo devuelve al login
         return redirect(url_for('login'))
 
     return f'Acceso exitoso. Bienvenido {username}'
