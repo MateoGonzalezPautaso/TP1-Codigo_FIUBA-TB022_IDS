@@ -7,6 +7,22 @@ app = Flask(__name__)
 app.secret_key = os.urandom(15)       # La secret_key es necesaria para validar sesiones de usuarios
 
 
+def valid_user_check(username) -> bool:
+    '''Verifica si el usuario es apto para acceder a los templates restringidos por un login.
+    Si resulta invalido, devuelve False.
+    Si el usuario esta habiliado, devuelve True
+    
+    PRECONDICION: el usuario es el usuario asignado en la sesion actual'''
+
+    if not session.get('auth'):           # Si la sesion no esta autenticada, lo devuelve al login
+        return False
+    
+    if session.get('user') != username:         # Si el username no es igual al autenticado en la sesion, lo devuelve al login
+        return False
+    
+    return True
+    
+
 @app.route('/')
 def index():
     return render_template('index.html')
@@ -38,40 +54,44 @@ def login():
         if password_form == assigned_password:
             session['auth'] = True                  # Autentica la sesion del usuario
             session['user'] = username_form          # Asigna el username autenticado en la sesion
-            return redirect(url_for('suggest',username=username_form))
-
+            return redirect(url_for('suggest'))
 
     return render_template('login.html')
 
-@app.route('/suggest/<username>', methods=["GET","POST"])
-def suggest(username):
-    if not session.get('auth'):           # Si la sesion no esta autenticada, lo devuelve al login
+@app.route('/suggest', methods=["GET","POST"])
+def suggest():
+    session_user = session.get('user')          # Usuario asignado en la sesion. Vale None a menos que haya pasado por login
+    if not valid_user_check(session_user):
         return redirect(url_for('login'))
     
-    if session.get('user') != username:         # Si el username no es igual al autenticado en la sesion, lo devuelve al login
-        return redirect(url_for('login'))
     if request.method == "POST":         #Si es metodo post(ya se completo el primer form), guarda la cantidad de campos a usar
         cantidad = int(request.form.get("numIngredientes"))
-        nombre = int(request.form.get("namePlato"))      #Estos 2 datos tienen que ser enviados a la api pra meterlos en la BBDD
-        descripcion = int(request.form.get("descPlato"))
-        return redirect(url_for('suggest_ingredientes', cantidad=cantidad, _external=True))    #Redirecciona a el forms de ingredientes, pasando la cantidad de campos
+        nombre = request.form.get("namePlato")      #Estos 2 datos tienen que ser enviados a la api pra meterlos en la BBDD
+        descripcion = request.form.get("descPlato")
+        return redirect(url_for('suggest_ingredientes', cantidad=cantidad))    #Redirecciona a el forms de ingredientes, pasando la cantidad de camposcl
         
-    return render_template("form_receta.html")
-
-    # En esta funcion se va a usar el endpoint POST de la api
+    return render_template("form_receta.html", username=session_user)
 
 
-@app.route('/suggest/ingredientes/', methods=["GET","POST"])
+@app.route('/suggest/ingredientes', methods=["GET","POST"])
 def suggest_ingredientes():
+    session_user = session.get('user')          # Usuario asignado en la sesion. Vale None a menos que haya pasado por login
+    if not valid_user_check(session_user):
+        return redirect(url_for('login'))
+
     cantidad = int(request.args.get('cantidad'))   #Recibe cantidad como argumento
+    
     if request.method == "POST":
         dict_ingredientes = {}   #Crea el diccionario para que puedas ser jsonificado
         for i in range(cantidad):
             ingrediente = request.form.get(f"producto{i}")
             cant = request.form.get(f"cantidad{i}")   #Ingresa los datos en el dict
             dict_ingredientes[ingrediente] = cant    #ACA HABRIA QUE JSONFICARLO Y QUE LO PUEDAN LLEVAR A LA API
+        
+        print(dict_ingredientes)
         return render_template("aceptado.html")
-    return render_template('form_ingredientes.html', cantidad=cantidad)
+    
+    return render_template('form_ingredientes.html',cantidad=cantidad)
 
 
 @app.errorhandler(404)

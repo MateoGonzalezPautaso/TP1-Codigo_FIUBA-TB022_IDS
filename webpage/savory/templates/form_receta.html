@@ -1,4 +1,7 @@
 {% extends "base.html" %}
+
+{% block title %} Sugerencias {% endblock %}
+
 {% block body %}
 <header id="gtco-header" class="gtco-cover gtco-cover-sm" role="banner" style="background-image: url(images/img_bg_3.jpg)">
     <div class="overlay"></div>
@@ -9,11 +12,10 @@
                 <div class="row row-mt-15em">
                     <div class="col-md-12 mt-text animate-box" data-animate-effect="fadeInUp">
                         <span class="intro-text-small">Recetas FIUBA</span>
-                        <h1 class="cursive-font">¡Ya eres parte de la comunidad!</h1>
-                        <div></div>
-                        <h4 class="intro-text-small">Comparte tus mejores platos y descubre nuevas delicias. Para sugerir una receta, complete con los datos de su receta para que pueda ser revisada</h4>
+                        <h1 class="cursive-font">¡Bienvenido {{username}}!</h1>
+                        <br>
+                        <h4 class="intro-text-small">Comparte tus mejores platos. Para sugerir una receta, complete el siguiente formulario</h4>
                     </div>
-                    
                 </div>
                 
             </div>
@@ -26,7 +28,7 @@
             <div class="col-md-12">
                 <div class="col-md-6 animate-box">
                     <h3>Receta de Ingredientes</h3>
-                    <form action="{{ url_for('suggest') }}" id="ingredientesForm" method="post">
+                    <form action="{{ url_for('suggest', username=username) }}" id="ingredientesForm" method="post">
                         <div class="row form-group">
                             <div class="col-md-12">
                                 <label for="numIngredientes">¿Cuantos ingredientes tiene tu receta?</label>
