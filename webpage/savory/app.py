@@ -7,22 +7,6 @@ app = Flask(__name__)
 app.secret_key = os.urandom(15)       # La secret_key es necesaria para validar sesiones de usuarios
 
 
-def valid_user_check(username) -> bool:
-    '''Verifica si el usuario es apto para acceder a los templates restringidos por un login.
-    Si resulta invalido, devuelve False.
-    Si el usuario esta habiliado, devuelve True
-    
-    PRECONDICION: el usuario es el usuario asignado en la sesion actual'''
-
-    if not session.get('auth'):           # Si la sesion no esta autenticada, lo devuelve al login
-        return False
-    
-    if session.get('user') != username:         # Si el username no es igual al autenticado en la sesion, lo devuelve al login
-        return False
-    
-    return True
-    
-
 @app.route('/')
 def index():
     return render_template('index.html')
@@ -60,8 +44,7 @@ def login():
 
 @app.route('/suggest', methods=["GET","POST"])
 def suggest():
-    session_user = session.get('user')          # Usuario asignado en la sesion. Vale None a menos que haya pasado por login
-    if not valid_user_check(session_user):
+    if not session.get('auth'):
         return redirect(url_for('login'))
     
     if request.method == "POST":         #Si es metodo post(ya se completo el primer form), guarda la cantidad de campos a usar
@@ -70,17 +53,17 @@ def suggest():
         descripcion = request.form.get("descPlato")
         return redirect(url_for('suggest_ingredientes', cantidad=cantidad))    #Redirecciona a el forms de ingredientes, pasando la cantidad de camposcl
         
-    return render_template("form_receta.html", username=session_user)
+    return render_template("form_receta.html", username=session.get('user'))
 
 
 @app.route('/suggest/ingredientes', methods=["GET","POST"])
 def suggest_ingredientes():
-    session_user = session.get('user')          # Usuario asignado en la sesion. Vale None a menos que haya pasado por login
-    if not valid_user_check(session_user):
+    if not session.get('auth'):
         return redirect(url_for('login'))
 
     cantidad = int(request.args.get('cantidad'))   #Recibe cantidad como argumento
-    
+    duenio = session.get('user')
+
     if request.method == "POST":
         dict_ingredientes = {}   #Crea el diccionario para que puedas ser jsonificado
         for i in range(cantidad):
