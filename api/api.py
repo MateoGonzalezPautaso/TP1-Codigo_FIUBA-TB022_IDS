@@ -92,5 +92,27 @@ def get_password(username):
 
 
 
+@app.route('/crear_receta', methods = ['POST'])
+def crear_receta():
+    conn = engine.connect()
+    receta = request.get_json()
+    #Se crea la query en base a los datos pasados por el endpoint.
+    #Los mismos deben viajar en el body en formato JSON raw
+    query = f"""INSERT INTO recetas (nombre, ingredientes, duenio, descripcion) 
+    VALUES ('{receta['nombre']}',
+            '{receta['ingredientes']}',
+            '{receta["duenio"]}',
+            '{receta["descripcion"]}'
+            );"""
+    
+    try:
+        result = conn.execute(text(query))    # Se ejecuta la query
+        conn.commit()   # Se aplica a la base de datos
+        conn.close()      # Se cierra la conexion con la database
+    except SQLAlchemyError as err:
+        return jsonify({'message': 'Se ha producido un error' + str(err.__cause__)})
+    
+    return jsonify({'message': 'se ha agregado correctamente' + query}), 201
+
 if __name__ == "__main__":
     app.run("127.0.0.1", port="5000", debug=True)
