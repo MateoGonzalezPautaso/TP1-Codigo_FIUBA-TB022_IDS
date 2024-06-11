@@ -18,25 +18,11 @@ def favicon():
 
 @app.route('/menu')
 def menu():
-    platosjson = [
-    {
-        "nombre": "Sopa",
-        "descripcion": "Vor  wieder euch wiederholt widerklang selbst ich tränen, mich wie lebt ihr gut blick gestalten. Und freundschaft gut die."
-    },
-    {
-        "nombre": "Pizza",
-        "descripcion": "De el quedo sus los y el se para, la deja bajo algodón el mudas."
-    },
-    {
-        "nombre": "Churrasco",
-        "descripcion": "Door but bird ungainly ungainly lenore for ember grave. Yore door stood days back and now nevermore, the as if."
-    },
-    {
-        "nombre": "Spaguetti",
-        "descripcion": "Halallal uos leg en scemem hol keguggethuk yg num. Wirud uos fyomnok ezes ezes kyul."
-    }
-]
-    return render_template('menu.html', platosjson=platosjson)
+    api_url = f'http://127.0.0.1:5000/platos'
+    response = requests.get(api_url)
+    platos_json_api = response.json()       # Nombre y descripcion de los platos de la database
+    
+    return render_template('menu.html', platosjson=platos_json_api)
 
 @app.route('/services')
 def services():
