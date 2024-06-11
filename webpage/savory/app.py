@@ -20,9 +20,9 @@ def favicon():
 def menu():
     api_url = f'http://127.0.0.1:5000/platos'
     response = requests.get(api_url)
-    platos_json_api = response.json()       # Nombre y descripcion de los platos de la database
+    lista_platos = response.json()       # Nombre y descripcion de los platos de la database
     
-    return render_template('menu.html', platosjson=platos_json_api)
+    return render_template('menu.html', platosjson=lista_platos)
 
 @app.route('/services')
 def services():

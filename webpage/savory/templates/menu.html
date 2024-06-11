@@ -2,6 +2,20 @@
 
 {% block title %} Menu {% endblock %}
 
+{% block style %}
+
+<style> .descripcion{height: 72px;
+					align-items: center;
+					display: flex;
+					justify-content: center;}
+
+#titulo_receta{margin-bottom: 24px;}
+
+
+</style>
+
+{% endblock %}
+
 {% block body %}
 
 	<header id="gtco-header" class="gtco-cover gtco-cover-sm" role="banner" style="background-image: url(static/images/img_bg_1.jpg)" data-stellar-background-ratio="0.5">
@@ -13,8 +27,7 @@
 
 					<div class="row row-mt-15em">
 						<div class="col-md-12 mt-text animate-box" data-animate-effect="fadeInUp">
-							<span class="intro-text-small">Hand-crafted by <a href="http://gettemplates.co" target="_blank">GetTemplates.co</a></span>
-							<h1 class="cursive-font">Taste all our menu!</h1>	
+							<h1 class="cursive-font">¡Disfruta de la mejor cocina!</h1>	
 						</div>
 						
 					</div>
@@ -26,19 +39,42 @@
 	</header>
 
 
+
 	<div class="gtco-section">
 		<div class="gtco-container">
 			<div class="row">
 				<div class="col-md-8 col-md-offset-2 text-center gtco-heading">
-					<h2 class="cursive-font primary-color">Popular Dishes</h2>
-					<p>Dignissimos asperiores vitae velit veniam totam fuga molestias accusamus alias autem provident. Odit ab aliquam dolor eius.</p>
+					<h2 class="cursive-font primary-color">Nuestras recetas</h2>
+					<p>Todas las deliciosas recetas con las que contamos actualmente.</p>
 				</div>
 			</div>
+
 			<div class="row">
-				<div id="contenedor-platos" class="row">{{ platosjson }}</div>
+				<!--div id="contenedor-platos" class="row">{{ platosjson }}</div>-->
+				
+				{% for plato in platosjson %}
+					<div class="col-lg-4 col-md-4 col-sm-6">
+						<a href="https://fulltimemotos.com.ar/wp-content/uploads/cuantos-caballos-tiene-una-yamaha-r6-1.webp" class="fh5co-card-item image-popup">
+							<figure>
+								<div class="overlay"><i class="ti-plus"></i></div>
+								<img src="https://fulltimemotos.com.ar/wp-content/uploads/cuantos-caballos-tiene-una-yamaha-r6-1.webp" alt="Image" class="img-responsive">
+							</figure>
+
+							<div class="fh5co-text">
+								<h2 id="titulo_receta">{{ plato.nombre }}</h2>
+								<div class='descripcion'>
+									<p>{{ plato.descripcion }}</p>
+								</div>
+							</div>
+
+						</a>
+					</div>
+				{% endfor %}
+			</div>
+
+
 		</div>
 	</div>
-	<script src="{{ url_for('static', filename='js/menu-platos.js' )}}"></script>
-
+	
 {% endblock %}
 
