@@ -92,12 +92,16 @@ def suggest_ingredientes():
             cant = request.form.get(f"cantidad{i}")   #Ingresa los datos en el dict
             dict_ingredientes[ingrediente] = cant    #ACA HABRIA QUE JSONFICARLO Y QUE LO PUEDAN LLEVAR A LA API
         
-        data = {
+        body = {
             'nombre': nombre,
             'ingredientes': dict_ingredientes,
             'duenio': duenio,
             'descripcion': descripcion
         }
+
+        # Realiza la solicitud a la API de backend
+        api_url = f'http://127.0.0.1:5000/crear_receta'
+        response = requests.post(api_url, json = body)
 
         return render_template("aceptado.html")
     
