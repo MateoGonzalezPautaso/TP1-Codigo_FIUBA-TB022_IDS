@@ -69,7 +69,7 @@ def suggest():
         cantidad = int(request.form.get("numIngredientes"))
         nombre = request.form.get("namePlato")      #Estos 2 datos tienen que ser enviados a la api pra meterlos en la BBDD
         descripcion = request.form.get("descPlato")
-        return redirect(url_for('suggest_ingredientes', cantidad=cantidad))    #Redirecciona a el forms de ingredientes, pasando la cantidad de camposcl
+        return redirect(url_for('suggest_ingredientes', cantidad=cantidad, nombre=nombre, descripcion=descripcion))    #Redirecciona a el forms de ingredientes, pasando la cantidad de camposcl
         
     return render_template("form_receta.html", username=session.get('user'))
 
@@ -80,6 +80,9 @@ def suggest_ingredientes():
         return redirect(url_for('login'))
 
     cantidad = int(request.args.get('cantidad'))   #Recibe cantidad como argumento
+    nombre = str(request.args.get('nombre'))
+    descripcion = str(request.args.get('descripcion'))
+    
     duenio = session.get('user')
 
     if request.method == "POST":
@@ -89,10 +92,16 @@ def suggest_ingredientes():
             cant = request.form.get(f"cantidad{i}")   #Ingresa los datos en el dict
             dict_ingredientes[ingrediente] = cant    #ACA HABRIA QUE JSONFICARLO Y QUE LO PUEDAN LLEVAR A LA API
         
-        print(dict_ingredientes)
+        data = {
+            'nombre': nombre,
+            'ingredientes': dict_ingredientes,
+            'duenio': duenio,
+            'descripcion': descripcion
+        }
+
         return render_template("aceptado.html")
     
-    return render_template('form_ingredientes.html',cantidad=cantidad)
+    return render_template('form_ingredientes.html',cantidad=cantidad, nombre=nombre, descripcion=descripcion)
 
 
 @app.errorhandler(404)

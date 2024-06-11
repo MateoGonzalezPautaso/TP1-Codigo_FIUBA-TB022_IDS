@@ -29,19 +29,19 @@
             <div class="col-md-12">
                 <div class="col-md-6 animate-box">
                     <h2>Ingredientes de la receta</h2>
-                    <form action="{{url_for('suggest_ingredientes', cantidad=cantidad) }}" id="ingredientesForm" method="post">
+                    <form action="{{url_for('suggest_ingredientes', cantidad=cantidad, nombre=nombre, descripcion=descripcion) }}" id="ingredientesForm" method="post">
                         
                         {% for i in range(cantidad|int) %}
                             <div class="row form-group">
                                 <div class="col-md-12">
                                     <label for="producto{{i}}">Ingrediente {{i+1}}:</label>
-                                    <input type="text" id="producto{{i}}" name="producto{{i}}">
+                                    <input type="text" id="producto{{i}}" name="producto{{i}}" required>
                                 </div>
                             </div>
                             <div class="row form-group">
                                 <div class="col-md-12">
                                     <label for="cantidad{{i}}">Cantidad:</label>
-                                    <input type="text" id="cantidad{{i}}" name="cantidad{{i}}">
+                                    <input type="text" id="cantidad{{i}}" name="cantidad{{i}}" required>
                                 </div>
                             </div>
                                 <br>
