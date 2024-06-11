@@ -1,8 +1,8 @@
 from flask import Flask, jsonify, request
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy import create_engine
-from sqlalchemy import text
+from sqlalchemy import create_engine, text
 from sqlalchemy.exc import SQLAlchemyError
+import json
 
 
 app = Flask(__name__)
@@ -91,6 +91,32 @@ def get_password(username):
         return jsonify(row[0]), 200 # Devuelvo un json con el primer (y unico) elemento de la row que es la password
 
 
+
+@app.route('/crear_receta', methods = ['POST'])
+def crear_receta():
+    conn = engine.connect()
+    receta = request.get_json()
+
+    json_ingredientes = json.dumps(receta['ingredientes'])  #Se maneja automaticamante el formato JSON para espaciar caracteres especiales
+
+
+    #Se crea la query en base a los datos pasados por el endpoint.
+    #Los mismos deben viajar en el body en formato JSON raw
+    query = f"""INSERT INTO recetas (nombre, ingredientes, duenio, descripcion) 
+    VALUES ('{receta['nombre']}',
+            '{json_ingredientes}',
+            '{receta["duenio"]}',
+            '{receta["descripcion"]}'
+            );"""
+    
+    try:
+        result = conn.execute(text(query))    # Se ejecuta la query
+        conn.commit()   # Se aplica a la base de datos
+        conn.close()      # Se cierra la conexion con la database
+    except SQLAlchemyError as err:
+        return jsonify({'message': 'Se ha producido un error' + str(err.__cause__)}), 500
+    
+    return jsonify({'message': 'se ha agregado correctamente' + query}), 201
 
 if __name__ == "__main__":
     app.run("127.0.0.1", port="5000", debug=True)
