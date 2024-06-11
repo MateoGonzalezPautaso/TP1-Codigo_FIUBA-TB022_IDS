@@ -76,8 +76,10 @@ def suggest_ingredientes():
         for i in range(cantidad):
             ingrediente = request.form.get(f"producto{i}")
             cant = request.form.get(f"cantidad{i}")   #Ingresa los datos en el dict
-            dict_ingredientes[ingrediente] = cant    #ACA HABRIA QUE JSONFICARLO Y QUE LO PUEDAN LLEVAR A LA API
-        
+            tipo = request.form.get(f"tipo{i}")
+            valor = f"{cant} {tipo}"
+            dict_ingredientes[ingrediente] = valor    #ACA HABRIA QUE JSONFICARLO Y QUE LO PUEDAN LLEVAR A LA API
+
         body = {
             'nombre': nombre,
             'ingredientes': dict_ingredientes,

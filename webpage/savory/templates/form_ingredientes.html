@@ -41,7 +41,13 @@
                             <div class="row form-group">
                                 <div class="col-md-12">
                                     <label for="cantidad{{i}}">Cantidad:</label>
-                                    <input type="text" id="cantidad{{i}}" name="cantidad{{i}}" required>
+                                    <input type="number" id="cantidad{{i}}" name="cantidad{{i}}" required>
+
+                                        <select name="tipo{{i}}">
+                                            <option value="gr">gr</option>
+                                            <option value="ml">ml</option>
+                                            <option value="unidad">unidad</option>
+                                        </select>
                                 </div>
                             </div>
                                 <br>
