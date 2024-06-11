@@ -18,25 +18,11 @@ def favicon():
 
 @app.route('/menu')
 def menu():
-    platosjson = [
-    {
-        "nombre": "Sopa",
-        "descripcion": "Vor  wieder euch wiederholt widerklang selbst ich tränen, mich wie lebt ihr gut blick gestalten. Und freundschaft gut die."
-    },
-    {
-        "nombre": "Pizza",
-        "descripcion": "De el quedo sus los y el se para, la deja bajo algodón el mudas."
-    },
-    {
-        "nombre": "Churrasco",
-        "descripcion": "Door but bird ungainly ungainly lenore for ember grave. Yore door stood days back and now nevermore, the as if."
-    },
-    {
-        "nombre": "Spaguetti",
-        "descripcion": "Halallal uos leg en scemem hol keguggethuk yg num. Wirud uos fyomnok ezes ezes kyul."
-    }
-]
-    return render_template('menu.html', platosjson=platosjson)
+    api_url = f'http://127.0.0.1:5000/platos'
+    response = requests.get(api_url)
+    lista_platos = response.json()       # Nombre y descripcion de los platos de la database
+    
+    return render_template('menu.html', platosjson=lista_platos)
 
 @app.route('/services')
 def services():
@@ -90,8 +76,10 @@ def suggest_ingredientes():
         for i in range(cantidad):
             ingrediente = request.form.get(f"producto{i}")
             cant = request.form.get(f"cantidad{i}")   #Ingresa los datos en el dict
-            dict_ingredientes[ingrediente] = cant    #ACA HABRIA QUE JSONFICARLO Y QUE LO PUEDAN LLEVAR A LA API
-        
+            tipo = request.form.get(f"tipo{i}")
+            valor = f"{cant} {tipo}"
+            dict_ingredientes[ingrediente] = valor    #ACA HABRIA QUE JSONFICARLO Y QUE LO PUEDAN LLEVAR A LA API
+
         body = {
             'nombre': nombre,
             'ingredientes': dict_ingredientes,
