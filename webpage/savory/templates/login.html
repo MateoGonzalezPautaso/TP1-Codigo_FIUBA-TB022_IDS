@@ -13,7 +13,8 @@
 					<div class="row row-mt-15em">
 						<div class="col-md-12 mt-text animate-box" data-animate-effect="fadeInUp">
 							<span class="intro-text-small">Recetas FIUBA</span>
-							<h1 class="cursive-font">Bienvenido!</h1>	
+							<h1 class="cursive-font">Inicio de sesión</h1>
+							<h4 class="intro-text-small">Para sugerir recetas es necesario iniciar sesión</h4>
 						</div>
 						
 					</div>
@@ -30,11 +31,11 @@
 				<div class="col-md-12">
 					<div class="col-md-6 animate-box">
 					<h3>Inicio de sesión:</h3>
-					<form action="{{ url_for('contact')}}" method='post'>
+					<form action="{{ url_for('login') }}" method='post'>
 						<div class="row form-group">
 							<div class="col-md-12">
 								<label class="sr-only" for="username">Username</label>
-								<input type="text" name="username_form" class="form-control" placeholder="Nombre de usuario">
+								<input type="text" name="username_form" class="form-control" placeholder="Nombre de usuario" required>
 							</div>
 							
 						</div>
@@ -42,7 +43,7 @@
 						<div class="row form-group">
 							<div class="col-md-12">
 								<label class="sr-only" for="password">Contraseña</label>
-								<input type="password" name="password_form" class="form-control" placeholder="Contraseña">
+								<input type="password" name="password_form" class="form-control" placeholder="Contraseña" required>
 							</div>
 						</div>
 						<div class="form-group">
@@ -54,7 +55,7 @@
 				<div class="col-md-5 col-md-push-1 animate-box">
 					
 					<div class="gtco-contact-info">
-						<h3>Contact Information</h3>
+						<h3>Información de contacto</h3>
 						<ul>
 							<li class="address">Av. Paseo Colón 850, <br> Cdad. Autónoma de Buenos Aires C1063</li>
 							<li class="phone"><a href="tel://1234567920"> +54 9 11 1234-7698</a></li>
