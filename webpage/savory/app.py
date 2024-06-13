@@ -10,7 +10,7 @@ def cant_ingredientes(list_dicc):
     ingredientes = {} 
     for i in range(len(list_dicc)):
         for ingrediente, cantidad in list_dicc[i].items():
-            ingredientes[ingrediente] = ingredientes.get(ingrediente, 0) + cantidad
+            ingredientes[ingrediente] = ingredientes.get(ingrediente, "") + cantidad
     return ingredientes
 
 @app.route('/')
