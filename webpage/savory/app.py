@@ -6,6 +6,12 @@ import os
 app = Flask(__name__)
 app.secret_key = os.urandom(15)       # La secret_key es necesaria para validar sesiones de usuarios
 
+def cant_ingredientes(list_dicc):
+    ingredientes = {} 
+    for i in range(len(list_dicc)):
+        for ingrediente, cantidad in list_dicc[i].items():
+            ingredientes[ingrediente] = ingredientes.get(ingrediente, "") + cantidad
+    return ingredientes
 
 @app.route('/')
 def index():
