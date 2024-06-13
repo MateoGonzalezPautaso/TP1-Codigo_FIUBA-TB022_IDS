@@ -36,7 +36,7 @@ def platos():
         return jsonify(str(err.__cause__)), 500
     
     data = [] # Armamos una lista para agregar diccionarios con todos los datos
-    
+
     for row in result: # Recorremos las lineas del resultado de la query
         entity = {}
         entity['nombre'] = row.nombre
@@ -126,7 +126,6 @@ def borrar_receta(nombre):
     conn = engine.connect()
     query = f"DELETE FROM recetas WHERE nombre = {nombre}" # query para borrar
     validation_query = f"SELECT * FROM recetas WHERE nombre = {nombre}" # query para verificar que el plato exista
-    print(query, validation_query)
     
     try:
         val_result = conn.execute(text(validation_query))
@@ -136,12 +135,48 @@ def borrar_receta(nombre):
             conn.close()
         else:
             conn.close()
-            return jsonify({"message": "El plato no existe"}), 404
+            return jsonify({"message": "La receta no existe"}), 404
     
     except SQLAlchemyError as err:
         return jsonify({'message': 'Se ha producido un error' + str(err.__cause__)}), 500
     
     return jsonify({'message': 'se ha eliminado correctamente'}), 202
+
+
+@app.route('/cambiar_receta/<nombre>', methods = ['PATCH'])
+def cambiar_receta(nombre):
+    '''Permite cambiar los ingredientes, la descripcion y la imagen de una receta'''
+
+
+    conn = engine.connect()
+    nuevos_datos = request.get_json()       # Los nuevos datos de la receta se envian en el body de la request
+
+    nuevo_json_ingredientes = json.dumps(nuevos_datos['ingredientes'])
+
+    query = f"""UPDATE recetas 
+    SET 
+        imagen = '{nuevos_datos['imagen']}',
+        descripcion = '{nuevos_datos['descripcion']}',
+        ingredientes = '{nuevo_json_ingredientes}'
+    WHERE nombre = '{nombre}';
+    """
+    
+    validation_query = f"SELECT * FROM recetas WHERE nombre = '{nombre}';"
+    try:
+        val_result = conn.execute(text(validation_query))
+        if val_result.rowcount!=0:
+            result = conn.execute(text(query))
+            conn.commit()
+            conn.close()
+        else:
+            conn.close()
+            return jsonify({'message': "la receta no existe"}), 404
+        
+    except SQLAlchemyError as err:
+        return jsonify({'message': str(err.__cause__)}), 500
+    
+    return jsonify({'message': 'se ha modificado correctamente' + query}), 200
+
 
 
 if __name__ == "__main__":
