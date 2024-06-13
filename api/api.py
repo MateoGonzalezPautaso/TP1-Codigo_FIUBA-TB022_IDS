@@ -102,11 +102,12 @@ def crear_receta():
 
     #Se crea la query en base a los datos pasados por el endpoint.
     #Los mismos deben viajar en el body en formato JSON raw
-    query = f"""INSERT INTO recetas (nombre, ingredientes, duenio, descripcion) 
+    query = f"""INSERT INTO recetas (nombre, ingredientes, duenio, descripcion, imagen) 
     VALUES ('{receta['nombre']}',
             '{json_ingredientes}',
             '{receta["duenio"]}',
-            '{receta["descripcion"]}'
+            '{receta["descripcion"]}',
+            '{receta["imagen"]}'
             );"""
     
     try:
