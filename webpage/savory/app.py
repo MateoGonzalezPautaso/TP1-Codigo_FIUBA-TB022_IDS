@@ -90,11 +90,15 @@ def suggest_ingredientes():
             valor = f"{cant} {tipo}"
             dict_ingredientes[ingrediente] = valor    #ACA HABRIA QUE JSONFICARLO Y QUE LO PUEDAN LLEVAR A LA API
 
+        link_imagen = request.form.get("link_imagen")
+        print(link_imagen)
+
         body = {
             'nombre': nombre,
             'ingredientes': dict_ingredientes,
             'duenio': duenio,
-            'descripcion': descripcion
+            'descripcion': descripcion,
+            'imagen': link_imagen
         }
 
         # Realiza la solicitud a la API de backend
