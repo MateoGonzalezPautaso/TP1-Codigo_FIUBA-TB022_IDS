@@ -44,6 +44,7 @@ def platos():
 
     return jsonify(data), 200 # Devolvemos la informacion obtenida
 
+
 @app.route('/ingredientes/<lista_platos>', methods = ['GET'])
 def ingredientes(lista_platos):
     '''
@@ -68,6 +69,7 @@ def ingredientes(lista_platos):
 
     return jsonify(data), 200 # Devolvemos la informacion obtenida
 
+
 @app.route('/login/<username>', methods = ['GET'])
 def get_password(username):
     '''Devuelve la contraseña del usuario pasado por la ruta en formato de string.
@@ -91,14 +93,12 @@ def get_password(username):
         return jsonify(row[0]), 200 # Devuelvo un json con el primer (y unico) elemento de la row que es la password
 
 
-
 @app.route('/crear_receta', methods = ['POST'])
 def crear_receta():
     conn = engine.connect()
     receta = request.get_json()
 
     json_ingredientes = json.dumps(receta['ingredientes'])  #Se maneja automaticamante el formato JSON para espaciar caracteres especiales
-
 
     #Se crea la query en base a los datos pasados por el endpoint.
     #Los mismos deben viajar en el body en formato JSON raw
@@ -117,6 +117,30 @@ def crear_receta():
         return jsonify({'message': 'Se ha producido un error' + str(err.__cause__)}), 500
     
     return jsonify({'message': 'se ha agregado correctamente' + query}), 201
+
+
+@app.route('/borrar_receta/<nombre>', methods = ['DELETE'])
+def borrar_receta(nombre):
+    conn = engine.connect()
+    query = f"DELETE FROM recetas WHERE nombre = {nombre}" # query para borrar
+    validation_query = f"SELECT * FROM recetas WHERE nombre = {nombre}" # query para verificar que el plato exista
+    print(query, validation_query)
+    
+    try:
+        val_result = conn.execute(text(validation_query))
+        if val_result.rowcount != 0 :
+            result = conn.execute(text(query))
+            conn.commit()
+            conn.close()
+        else:
+            conn.close()
+            return jsonify({"message": "El plato no existe"}), 404
+    
+    except SQLAlchemyError as err:
+        return jsonify({'message': 'Se ha producido un error' + str(err.__cause__)}), 500
+    
+    return jsonify({'message': 'se ha eliminado correctamente'}), 202
+
 
 if __name__ == "__main__":
     app.run("127.0.0.1", port="5000", debug=True)
