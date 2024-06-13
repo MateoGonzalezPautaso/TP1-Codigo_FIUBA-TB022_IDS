@@ -1,6 +1,7 @@
 from flask import Flask, request, render_template, redirect, url_for, send_from_directory, session
 import requests
 import os
+from base64 import b64decode
 
 
 app = Flask(__name__)
@@ -27,7 +28,7 @@ def menu():
     api_url = f'http://127.0.0.1:5000/platos'
     response = requests.get(api_url)
     lista_platos = response.json()       # Nombre y descripcion de los platos de la database
-    
+
     return render_template('menu.html', platosjson=lista_platos)
 
 @app.route('/services')
@@ -39,11 +40,14 @@ def login():
     if request.method == 'POST':
         username_form = request.form.get('username_form')
         password_form = request.form.get('password_form')
-            
+
         # Realiza la solicitud a la API de backend
         api_url = f'http://127.0.0.1:5000/login/{username_form}'
         response = requests.get(api_url)
-        assigned_password = response.json()       # Contraseña asignada al usuario en la database
+        response_str = response.json()  # Contraseña asignada al usuario en la database
+
+        assigned_password_bytes = b64decode(response_str)  # Decodificacion a bytes
+        assigned_password = assigned_password_bytes.decode("utf-8")  # Casteo de bytes a str
 
         if password_form == assigned_password:
             session['auth'] = True                  # Autentica la sesion del usuario
@@ -56,13 +60,13 @@ def login():
 def suggest():
     if not session.get('auth'):
         return redirect(url_for('login'))
-    
+
     if request.method == "POST":         #Si es metodo post(ya se completo el primer form), guarda la cantidad de campos a usar
         cantidad = int(request.form.get("numIngredientes"))
         nombre = request.form.get("namePlato")      #Estos 2 datos tienen que ser enviados a la api pra meterlos en la BBDD
         descripcion = request.form.get("descPlato")
         return redirect(url_for('suggest_ingredientes', cantidad=cantidad, nombre=nombre, descripcion=descripcion))    #Redirecciona a el forms de ingredientes, pasando la cantidad de camposcl
-        
+
     return render_template("form_receta.html", username=session.get('user'))
 
 
@@ -74,7 +78,7 @@ def suggest_ingredientes():
     cantidad = int(request.args.get('cantidad'))   #Recibe cantidad como argumento
     nombre = str(request.args.get('nombre'))
     descripcion = str(request.args.get('descripcion'))
-    
+
     duenio = session.get('user')
 
     if request.method == "POST":
@@ -98,7 +102,7 @@ def suggest_ingredientes():
         response = requests.post(api_url, json = body)
 
         return render_template("aceptado.html")
-    
+
     return render_template('form_ingredientes.html',cantidad=cantidad, nombre=nombre, descripcion=descripcion)
 
 

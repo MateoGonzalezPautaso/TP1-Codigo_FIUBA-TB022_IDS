@@ -5,7 +5,7 @@ CREATE TABLE IF NOT EXISTS usuarios(
     password VARCHAR(20) NOT NULL,
     PRIMARY KEY(username)
     );
-    
+
 CREATE TABLE IF NOT EXISTS recetas(
     nombre VARCHAR(80),
     ingredientes JSON,
@@ -20,7 +20,11 @@ CREATE TABLE IF NOT EXISTS recetas(
 /* SE INSERTAN VALORES */
 
 INSERT INTO usuarios (username, password) VALUES
-    ('main', '1234');
+    ('main', 'MTIzNA=='),  -- 1234
+    ('carlosperez23', 'cGFzc3dvcmQ='), -- password
+    ('damian_chef', 'cXdlcnR5'), -- qwerty
+    ('laura_m', 'cmF0YXRvdWlsbGU='), -- ratatouille
+    ('paula_cocina', 'cGF1NWVzdHJlbGxhcw=='); -- pau5estrellas
 
 INSERT INTO recetas (nombre, ingredientes, duenio, descripcion, imagen) VALUES
     (
