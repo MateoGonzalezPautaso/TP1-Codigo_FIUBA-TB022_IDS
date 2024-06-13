@@ -1,3 +1,5 @@
+/* SE CREAN LAS TABLAS */
+
 CREATE TABLE IF NOT EXISTS usuarios(
     username VARCHAR(30) UNIQUE NOT NULL,
     password VARCHAR(20) NOT NULL,
