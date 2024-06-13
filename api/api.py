@@ -23,10 +23,10 @@ engine = create_engine(URI)
 @app.route('/platos', methods = ['GET'])
 def platos():
     '''
-    Devuelve el nombre y descripcion de los platos para poder ser mostrados en el template del menu
+    Devuelve el nombre, descripcion e imagen de los platos para poder ser mostrados en el template del menu
     '''
     conn = engine.connect() # Creamos la conexión con la base de datos
-    query = "SELECT nombre, descripcion FROM recetas;" # Generamos la query para obtener los nombres y descripciones de las recetas
+    query = "SELECT nombre, descripcion, imagen FROM recetas;" # Generamos la query para obtener los nombres y descripciones de las recetas
 
     try:
         result = conn.execute(text(query)) # Usamos text para poder usar un string como query y que execute la interprete
@@ -36,10 +36,12 @@ def platos():
         return jsonify(str(err.__cause__)), 500
     
     data = [] # Armamos una lista para agregar diccionarios con todos los datos
+    
     for row in result: # Recorremos las lineas del resultado de la query
         entity = {}
         entity['nombre'] = row.nombre
         entity['descripcion'] = row.descripcion
+        entity['imagen'] = row.imagen
         data.append(entity)
 
     return jsonify(data), 200 # Devolvemos la informacion obtenida
