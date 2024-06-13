@@ -1,9 +1,11 @@
-from flask import Flask, request, render_template, redirect, url_for, send_from_directory
+from flask import Flask, request, render_template, redirect, url_for, send_from_directory, session
 import requests
 import os
 
 
 app = Flask(__name__)
+app.secret_key = os.urandom(15)       # La secret_key es necesaria para validar sesiones de usuarios
+
 
 @app.route('/')
 def index():
@@ -16,14 +18,32 @@ def favicon():
 
 @app.route('/menu')
 def menu():
-    return render_template('menu.html')
+    platosjson = [
+    {
+        "nombre": "Sopa",
+        "descripcion": "Vor  wieder euch wiederholt widerklang selbst ich tränen, mich wie lebt ihr gut blick gestalten. Und freundschaft gut die."
+    },
+    {
+        "nombre": "Pizza",
+        "descripcion": "De el quedo sus los y el se para, la deja bajo algodón el mudas."
+    },
+    {
+        "nombre": "Churrasco",
+        "descripcion": "Door but bird ungainly ungainly lenore for ember grave. Yore door stood days back and now nevermore, the as if."
+    },
+    {
+        "nombre": "Spaguetti",
+        "descripcion": "Halallal uos leg en scemem hol keguggethuk yg num. Wirud uos fyomnok ezes ezes kyul."
+    }
+]
+    return render_template('menu.html', platosjson=platosjson)
 
 @app.route('/services')
 def services():
     return render_template('services.html')
 
-@app.route('/contact', methods = ['GET','POST'])
-def contact():
+@app.route('/login', methods = ['GET','POST'])
+def login():
     if request.method == 'POST':
         username_form = request.form.get('username_form')
         password_form = request.form.get('password_form')
@@ -31,13 +51,49 @@ def contact():
         # Realiza la solicitud a la API de backend
         api_url = f'http://127.0.0.1:5000/login/{username_form}'
         response = requests.get(api_url)
-        assignated_password = response.json()       # Contraseña asignada al usuario en la database
+        assigned_password = response.json()       # Contraseña asignada al usuario en la database
 
-        if password_form == assignated_password:
-            return 'Acceso exitoso'
-
+        if password_form == assigned_password:
+            session['auth'] = True                  # Autentica la sesion del usuario
+            session['user'] = username_form          # Asigna el username autenticado en la sesion
+            return redirect(url_for('suggest'))
 
     return render_template('login.html')
+
+@app.route('/suggest', methods=["GET","POST"])
+def suggest():
+    if not session.get('auth'):
+        return redirect(url_for('login'))
+    
+    if request.method == "POST":         #Si es metodo post(ya se completo el primer form), guarda la cantidad de campos a usar
+        cantidad = int(request.form.get("numIngredientes"))
+        nombre = request.form.get("namePlato")      #Estos 2 datos tienen que ser enviados a la api pra meterlos en la BBDD
+        descripcion = request.form.get("descPlato")
+        return redirect(url_for('suggest_ingredientes', cantidad=cantidad))    #Redirecciona a el forms de ingredientes, pasando la cantidad de camposcl
+        
+    return render_template("form_receta.html", username=session.get('user'))
+
+
+@app.route('/suggest/ingredientes', methods=["GET","POST"])
+def suggest_ingredientes():
+    if not session.get('auth'):
+        return redirect(url_for('login'))
+
+    cantidad = int(request.args.get('cantidad'))   #Recibe cantidad como argumento
+    duenio = session.get('user')
+
+    if request.method == "POST":
+        dict_ingredientes = {}   #Crea el diccionario para que puedas ser jsonificado
+        for i in range(cantidad):
+            ingrediente = request.form.get(f"producto{i}")
+            cant = request.form.get(f"cantidad{i}")   #Ingresa los datos en el dict
+            dict_ingredientes[ingrediente] = cant    #ACA HABRIA QUE JSONFICARLO Y QUE LO PUEDAN LLEVAR A LA API
+        
+        print(dict_ingredientes)
+        return render_template("aceptado.html")
+    
+    return render_template('form_ingredientes.html',cantidad=cantidad)
+
 
 @app.errorhandler(404)
 def page_not_found(e):

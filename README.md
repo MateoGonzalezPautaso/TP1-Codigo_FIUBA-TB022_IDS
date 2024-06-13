@@ -2,17 +2,21 @@
 
 # Recetas FIUBA
 
-<img src="" alt="Logo web" width="250"/>
-<Agregar imagen con el logo del proyecto>
+<img src="logo.jpg" alt="Logo web" width="250"/>
 
 </div>
 
 ## Qué es y cuál es su fin?
+Nuestro proyecto es una página de recetas de platos de comida. Esta pagina tiene tres funcionalidades: 
 
-Descripción.
+1. Mostrar los platos: Los usuarios pueden ver los platos, guardados en la base de datos, en una vista de la página.
+
+2. Generar una lista de compras: En la base de datos se tienen los ingredientes utilizados para cada plato, éstos se pueden muestran al usuario.
+
+3. Sugerencias de recetas: El usuario puede acceder con un usuarname y password para poder sugerir platos.
 
 ## Quiénes lo desarrollan?
-NOMBRE es un proyecto en proceso realizado por estudiantes de la Facultad de Ingeniería de la Universidad de Buenos Aires para la materia de Introducción al Desarrollo de Software.
+Recetas FIUBA es un proyecto en proceso realizado por estudiantes de la Facultad de Ingeniería de la Universidad de Buenos Aires para la materia de Introducción al Desarrollo de Software.
 
 ## Cómo instalar lo necesario para que me funcione la página web?
 Se deben ejecutar los tres scripts que nuestro equipo brinda. Es primordial que 'initproyecto.sh' sea ejecutado primero, luego de eso, el orden de ejecución de los otros dos scripts es indifirente.

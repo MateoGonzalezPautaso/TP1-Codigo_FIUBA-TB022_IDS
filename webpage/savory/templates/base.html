@@ -29,10 +29,7 @@
 	<link href="https://fonts.googleapis.com/css?family=Lato:300,400,700" rel="stylesheet">
 	<link href="https://fonts.googleapis.com/css?family=Kaushan+Script" rel="stylesheet">
 
-	{% block head %}
-	<link rel="shortcut icon" href=" {{ url_for('static', filename='/images/favicon.ico') }}">
-	{% endblock %}
-	
+	<link rel="shortcut icon" href=" {{ url_for('static', filename='/images/favicon.ico') }}">	
 
 	<!-- Animate.css -->
 	<link rel="stylesheet" href="{{ url_for('static', filename='/css/animate.css', _external=True) }}">
@@ -76,7 +73,7 @@
 					<ul>
 						<li class="active"><a href="{{ url_for('menu') }}">Menu</a></li>
 						<li class="has-dropdown"><a href="{{ url_for('services') }}">Services</a></li>
-						<li><a href="{{ url_for('contact') }}">Contact</a></li>
+						<li><a href="{{ url_for('login') }}">Sugerencias</a></li>
 					</ul>	
 				</div>
 			</div>
