@@ -42,6 +42,7 @@ def menu():
 
     return render_template('menu.html', platosjson=lista_platos)
 
+
 @app.route('/services')
 def services():
     return render_template('services.html')

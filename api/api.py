@@ -23,10 +23,10 @@ engine = create_engine(URI)
 @app.route('/platos', methods = ['GET'])
 def platos():
     '''
-    Devuelve el nombre y descripcion de los platos para poder ser mostrados en el template del menu
+    Devuelve el nombre, descripcion e imagen de los platos para poder ser mostrados en el template del menu
     '''
     conn = engine.connect() # Creamos la conexión con la base de datos
-    query = "SELECT nombre, descripcion FROM recetas;" # Generamos la query para obtener los nombres y descripciones de las recetas
+    query = "SELECT nombre, descripcion, imagen FROM recetas;" # Generamos la query para obtener los nombres y descripciones de las recetas
 
     try:
         result = conn.execute(text(query)) # Usamos text para poder usar un string como query y que execute la interprete
@@ -36,13 +36,16 @@ def platos():
         return jsonify(str(err.__cause__)), 500
     
     data = [] # Armamos una lista para agregar diccionarios con todos los datos
+
     for row in result: # Recorremos las lineas del resultado de la query
         entity = {}
         entity['nombre'] = row.nombre
         entity['descripcion'] = row.descripcion
+        entity['imagen'] = row.imagen
         data.append(entity)
 
     return jsonify(data), 200 # Devolvemos la informacion obtenida
+
 
 @app.route('/ingredientes/<lista_platos>', methods = ['GET'])
 def ingredientes(lista_platos):
@@ -68,6 +71,7 @@ def ingredientes(lista_platos):
 
     return jsonify(data), 200 # Devolvemos la informacion obtenida
 
+
 @app.route('/login/<username>', methods = ['GET'])
 def get_password(username):
     '''Devuelve la contraseña del usuario pasado por la ruta en formato de string.
@@ -91,14 +95,12 @@ def get_password(username):
         return jsonify(row[0]), 200 # Devuelvo un json con el primer (y unico) elemento de la row que es la password
 
 
-
 @app.route('/crear_receta', methods = ['POST'])
 def crear_receta():
     conn = engine.connect()
     receta = request.get_json()
 
     json_ingredientes = json.dumps(receta['ingredientes'])  #Se maneja automaticamante el formato JSON para espaciar caracteres especiales
-
 
     #Se crea la query en base a los datos pasados por el endpoint.
     #Los mismos deben viajar en el body en formato JSON raw
@@ -118,6 +120,65 @@ def crear_receta():
         return jsonify({'message': 'Se ha producido un error' + str(err.__cause__)}), 500
     
     return jsonify({'message': 'se ha agregado correctamente' + query}), 201
+
+
+@app.route('/borrar_receta/<nombre>', methods = ['DELETE'])
+def borrar_receta(nombre):
+    conn = engine.connect()
+    query = f"DELETE FROM recetas WHERE nombre = {nombre}" # query para borrar
+    validation_query = f"SELECT * FROM recetas WHERE nombre = {nombre}" # query para verificar que el plato exista
+    
+    try:
+        val_result = conn.execute(text(validation_query))
+        if val_result.rowcount != 0 :
+            result = conn.execute(text(query))
+            conn.commit()
+            conn.close()
+        else:
+            conn.close()
+            return jsonify({"message": "La receta no existe"}), 404
+    
+    except SQLAlchemyError as err:
+        return jsonify({'message': 'Se ha producido un error' + str(err.__cause__)}), 500
+    
+    return jsonify({'message': 'se ha eliminado correctamente'}), 202
+
+
+@app.route('/cambiar_receta/<nombre>', methods = ['PATCH'])
+def cambiar_receta(nombre):
+    '''Permite cambiar los ingredientes, la descripcion y la imagen de una receta'''
+
+
+    conn = engine.connect()
+    nuevos_datos = request.get_json()       # Los nuevos datos de la receta se envian en el body de la request
+
+    nuevo_json_ingredientes = json.dumps(nuevos_datos['ingredientes'])
+
+    query = f"""UPDATE recetas 
+    SET 
+        imagen = '{nuevos_datos['imagen']}',
+        descripcion = '{nuevos_datos['descripcion']}',
+        ingredientes = '{nuevo_json_ingredientes}'
+    WHERE nombre = '{nombre}';
+    """
+    
+    validation_query = f"SELECT * FROM recetas WHERE nombre = '{nombre}';"
+    try:
+        val_result = conn.execute(text(validation_query))
+        if val_result.rowcount!=0:
+            result = conn.execute(text(query))
+            conn.commit()
+            conn.close()
+        else:
+            conn.close()
+            return jsonify({'message': "la receta no existe"}), 404
+        
+    except SQLAlchemyError as err:
+        return jsonify({'message': str(err.__cause__)}), 500
+    
+    return jsonify({'message': 'se ha modificado correctamente' + query}), 200
+
+
 
 if __name__ == "__main__":
     app.run("127.0.0.1", port="5000", debug=True)
