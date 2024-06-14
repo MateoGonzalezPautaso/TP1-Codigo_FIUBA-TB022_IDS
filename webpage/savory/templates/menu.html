@@ -54,10 +54,10 @@
 				
 				{% for plato in platosjson %}
 					<div class="col-lg-4 col-md-4 col-sm-6">
-						<a href="https://fulltimemotos.com.ar/wp-content/uploads/cuantos-caballos-tiene-una-yamaha-r6-1.webp" class="fh5co-card-item image-popup">
+						<a href="{{ plato.imagen }}" class="fh5co-card-item image-popup">
 							<figure>
 								<div class="overlay"><i class="ti-plus"></i></div>
-								<img src="https://fulltimemotos.com.ar/wp-content/uploads/cuantos-caballos-tiene-una-yamaha-r6-1.webp" alt="Image" class="img-responsive">
+								<img src="{{ plato.imagen }}" alt="Image" class="img-responsive">
 							</figure>
 
 							<div class="fh5co-text">

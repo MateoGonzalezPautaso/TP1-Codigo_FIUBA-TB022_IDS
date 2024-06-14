@@ -18,6 +18,9 @@ Nuestro proyecto es una página de recetas de platos de comida. Esta pagina tien
 ## Quiénes lo desarrollan?
 Recetas FIUBA es un proyecto en proceso realizado por estudiantes de la Facultad de Ingeniería de la Universidad de Buenos Aires para la materia de Introducción al Desarrollo de Software.
 
+## Cómo instalar lo necesario para que me funcione la página web?
+Se deben ejecutar los tres scripts que nuestro equipo brinda. Es primordial que 'initproyecto.sh' sea ejecutado primero, luego de eso, el orden de ejecución de los otros dos scripts es indifirente.
+
 ## Integrantes
 
 ### Agustin Bermudez
