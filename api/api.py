@@ -3,6 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import create_engine, text
 from sqlalchemy.exc import SQLAlchemyError
 import json
+from base64 import b64encode
 
 
 app = Flask(__name__)
@@ -179,6 +180,37 @@ def cambiar_receta(nombre):
     return jsonify({'message': 'se ha modificado correctamente' + query}), 200
 
 
+@app.route("/cambiar_contra/<username>",methods=['PATCH'])
+def cambiar_contra(username):
+    conn = engine.connect()
+    body = request.get_json()   #Viaja en el body de la request
+    password = body['password']
+    password_bytes = password.encode()
+    password_encriptada_bytes = b64encode(password_bytes)
+    password_encriptada = password_encriptada_bytes.decode()
+    print(password_encriptada)
+
+    query = f"""UPDATE usuarios 
+    SET 
+        password = '{password_encriptada}'
+    WHERE username = '{username}';
+    """
+    query_validation = f"SELECT * FROM usuarios WHERE username = '{username}';"
+    
+    try:
+        val_result = conn.execute(text(query_validation))
+        if val_result.rowcount!=0:
+            conn.execute(text(query))
+            conn.commit()
+            conn.close()
+        else:
+            conn.close()
+            return jsonify({'message': "El usuario no existe"}), 404
+        
+    except SQLAlchemyError as err:
+        return jsonify({'message': str(err.__cause__)}),500
+    
+    return jsonify({'message': 'se ha modificado correctamente' + query}), 200
 
 if __name__ == "__main__":
     app.run("127.0.0.1", port="5000", debug=True)
