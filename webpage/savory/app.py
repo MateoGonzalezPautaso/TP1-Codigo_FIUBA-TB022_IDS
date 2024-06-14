@@ -31,9 +31,27 @@ def menu():
 
     return render_template('menu.html', platosjson=lista_platos)
 
-@app.route('/services')
-def services():
-    return render_template('services.html')
+@app.route("/seleccion", methods=["GET", "POST"])
+def seleccion():
+    lista_recetas = ["Hamburgesa", "Sopa de tomate", "Mate"] 
+
+    if request.method == "POST":
+        recetas_elegidas = request.form.getlist("recetas")      #Recibe las recetas seleccionadas en los checkbox
+        api_url = f'http://127.0.0.1:5000/ingredientes/{tuple(recetas_elegidas)}'       # Devuelve nombre e ingredientes de cada plato
+        response = requests.get(api_url)
+        json_ingredientes_desarmado = response.json()
+        json_ingredientes_ordenado = cant_ingredientes(json_ingredientes_desarmado)     # Ordena las cantidades y unidades del diccionario de ingredientes
+
+        return redirect(url_for('listado',json_ingredientes = json_ingredientes_ordenado))
+    
+    return render_template("lista_recetas.html", lista_recetas=lista_recetas)
+
+@app.route("/listado")
+def listado():
+    json_ingredientes = request.args.get('json_ingredientes')
+    return render_template("lista_compra.html",dicc=json_ingredientes)
+    #mostrar la lista de la compra
+
 
 @app.route('/login', methods = ['GET','POST'])
 def login():
@@ -56,13 +74,6 @@ def login():
 
     return render_template('login.html')
 
-@app.route("/recetas", methods=["GET", "POST"])
-def recetas():
-    lista_recetas=["Torta", "Brownie"] #Aca hay que usar los datos de la api, es un ejemplo
-    if request.method == "POST":
-        recetas_elegidas = request.form.getlist("recetas") #Aca recibe los datos del checkbox
-        return(recetas_elegidas)
-    return render_template("lista_recetas.html", lista_recetas=lista_recetas)
 
 @app.route('/suggest', methods=["GET","POST"])
 def suggest():

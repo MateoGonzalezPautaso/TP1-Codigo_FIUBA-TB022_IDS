@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %} Pedido de recetas {% endblock %}
+{% block title %} Seleccion de recetas {% endblock %}
 
 {% block body %}	
 <header id="gtco-header" class="gtco-cover gtco-cover-sm" role="banner" style="background-image: url(static/images/img_bg_1.jpg)" data-stellar-background-ratio="0.5">
@@ -13,7 +13,7 @@
                 <div class="row row-mt-15em">
                     <div class="col-md-12 mt-text animate-box" data-animate-effect="fadeInUp">
                         <span class="intro-text-small">Hecho por alumnos de <a href="https://www.fi.uba.ar/" target="_blank">FIUBA</a></span>
-                        <h1 class="cursive-font">Los mejores sabores!</h1>	
+                        <h1 class="cursive-font">Elige lo que quieras cocinar!</h1>	
                     </div>
                     
                 </div>
@@ -23,13 +23,14 @@
         </div>
     </div>
 </header>
+
 <div class="gtco-section">
     <div class="gtco-container">
         <div class="row">
             <div class="col-md-12">
                 <div class="col-md-6 animate-box">
                     <h2>Seleccione las recetas:</h2>
-                    <form method="POST" action="{{url_for('recetas')}}" >
+                    <form method="POST" action="{{url_for('seleccion')}}" >
                         <div class="checkbox-container">
                             {% for receta in lista_recetas %}
                                     <input type="checkbox" class="check" name="recetas" value="{{receta}}">
