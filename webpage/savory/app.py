@@ -56,6 +56,14 @@ def login():
 
     return render_template('login.html')
 
+@app.route("/recetas", methods=["GET", "POST"])
+def recetas():
+    lista_recetas=["Torta", "Brownie"] #Aca hay que usar los datos de la api, es un ejemplo
+    if request.method == "POST":
+        recetas_elegidas = request.form.getlist("recetas") #Aca recibe los datos del checkbox
+        return(recetas_elegidas)
+    return render_template("lista_recetas.html", lista_recetas=lista_recetas)
+
 @app.route('/suggest', methods=["GET","POST"])
 def suggest():
     if not session.get('auth'):
