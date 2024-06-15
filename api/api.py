@@ -130,6 +130,29 @@ def cambiar_password(usuario):
     return jsonify({'message': 'se ha modificado correctamente' + query}), 200
 
 
+
+@app.route('/borrar_usuario/<usuario>', methods = ['DELETE'])
+def borrar_usuario(usuario):
+    conn = engine.connect()
+    query = f"DELETE FROM usuarios WHERE username = {usuario}" # query para borrar
+    validation_query = f"SELECT * FROM usuarios WHERE username = {usuario}" # query para verificar que el usuario exista
+    
+    try:
+        val_result = conn.execute(text(validation_query))
+        if val_result.rowcount != 0 :
+            result = conn.execute(text(query))
+            conn.commit()
+            conn.close()
+        else:
+            conn.close()
+            return jsonify({"message": "el usuario no existe"}), 404
+    
+    except SQLAlchemyError as err:
+        return jsonify({'message': 'Se ha producido un error' + str(err.__cause__)}), 500
+    
+    return jsonify({'message': 'se ha eliminado correctamente'}), 202
+
+
 @app.route('/crear_receta', methods = ['POST'])
 def crear_receta():
     conn = engine.connect()
