@@ -21,6 +21,29 @@ URI = f"mysql+mysqlconnector://{USUARIO}:{CONTRASEÑA}@{HOST}/{DATABASE}"
 engine = create_engine(URI)
 
 
+@app.route('/listado_recetas',methods=['GET'])
+def listado_recetas():
+    '''
+    Devuelve una lista con los nombres de todas las recetas de la base de datos
+    '''
+    conn = engine.connect() # Creamos la conexión con la base de datos
+    query = "SELECT nombre FROM recetas;" # Generamos la query para obtener los nombres y descripciones de las recetas
+
+    try:
+        result = conn.execute(text(query)) # Usamos text para poder usar un string como query y que execute la interprete
+        conn.close() #Cerramos la conexion con la base de datos
+
+    except SQLAlchemyError as err: # Agarramos cualquier excepcion que SQLAlchemy pueda tener
+        return jsonify(str(err.__cause__)), 500
+    
+    data = [] # Armamos una lista para agregar diccionarios con todos los datos
+
+    for row in result: # Recorremos las lineas del resultado de la query
+        data.append(row.nombre)
+
+    return jsonify(data), 200 # Devolvemos la informacion obtenida
+
+
 @app.route('/platos', methods = ['GET'])
 def platos():
     '''
@@ -64,11 +87,9 @@ def ingredientes(lista_platos):
     except SQLAlchemyError as err: # Agarramos cualquier excepcion que SQLAlchemy pueda tener
         return jsonify(str(err.__cause__)), 500
     
-    data = [] # Armamos una lista para agregar diccionarios con todos los datos
+    data = [] # Armamos una lista para agregregar los diccionaros
     for row in result: # Recorremos las lineas del resultado de la query
-        entity = {}
-        entity['ingredientes'] = row.ingredientes
-        data.append(entity)
+        data.append(json.loads(row.ingredientes))      # Convierte row.ingredientes a un diccionario. Sin esto queda como un str
 
     return jsonify(data), 200 # Devolvemos la informacion obtenida
 

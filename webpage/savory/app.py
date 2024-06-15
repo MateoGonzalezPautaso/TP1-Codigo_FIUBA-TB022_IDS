@@ -42,10 +42,24 @@ def menu():
 
     return render_template('menu.html', platosjson=lista_platos)
 
+@app.route("/seleccion", methods=["GET", "POST"])
+def seleccion():
+    api_url_nombres = 'http://127.0.0.1:5000/listado_recetas'
+    response = requests.get(api_url_nombres)       
+    lista_recetas = response.json() 
 
-@app.route('/services')
-def services():
-    return render_template('services.html')
+    if request.method == "POST":
+        recetas_elegidas = tuple(request.form.getlist("recetas"))      # Recibe las recetas seleccionadas en los checkbox
+        api_url_ingredientes = f'http://127.0.0.1:5000/ingredientes/{recetas_elegidas}'       # Devuelve nombre e ingredientes de cada plato
+        response = requests.get(api_url_ingredientes)
+        
+        json_ingredientes_desarmado = response.json()
+        json_ingredientes_ordenado = cant_ingredientes(json_ingredientes_desarmado)     # Ordena las cantidades y unidades del diccionario de ingredientes
+
+        return render_template("lista_compra.html",dicc = json_ingredientes_ordenado)
+    
+    return render_template("lista_recetas.html", lista_recetas=lista_recetas)
+
 
 @app.route('/login', methods = ['GET','POST'])
 def login():
@@ -67,6 +81,7 @@ def login():
             return redirect(url_for('suggest'))
 
     return render_template('login.html')
+
 
 @app.route('/suggest', methods=["GET","POST"])
 def suggest():
