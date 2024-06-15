@@ -44,12 +44,14 @@ def menu():
 
 @app.route("/seleccion", methods=["GET", "POST"])
 def seleccion():
-    lista_recetas = ["Hamburgesa", "Sopa de tomate", "Mate","Churrasco"] 
+    api_url_nombres = 'http://127.0.0.1:5000/listado_recetas'
+    response = requests.get(api_url_nombres)       
+    lista_recetas = response.json() 
 
     if request.method == "POST":
         recetas_elegidas = tuple(request.form.getlist("recetas"))      # Recibe las recetas seleccionadas en los checkbox
-        api_url = f'http://127.0.0.1:5000/ingredientes/{recetas_elegidas}'       # Devuelve nombre e ingredientes de cada plato
-        response = requests.get(api_url)
+        api_url_ingredientes = f'http://127.0.0.1:5000/ingredientes/{recetas_elegidas}'       # Devuelve nombre e ingredientes de cada plato
+        response = requests.get(api_url_ingredientes)
         
         json_ingredientes_desarmado = response.json()
         json_ingredientes_ordenado = cant_ingredientes(json_ingredientes_desarmado)     # Ordena las cantidades y unidades del diccionario de ingredientes
