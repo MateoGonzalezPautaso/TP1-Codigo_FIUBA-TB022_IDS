@@ -29,7 +29,7 @@ INSERT INTO usuarios (username, password) VALUES
 INSERT INTO recetas (nombre, ingredientes, duenio, descripcion, imagen) VALUES
     (
         'Spaghetti con salsa de tomate', 
-        '{"spaghetti": "200g", "tomate": "2", "ajo": "2 dientes", "aceite de oliva": "30ml", "sal": "10mg"}', 
+        '{"Spaghetti": "200 gr", "Tomate": "2 unidad", "Ajo": "2 unidad", "Aceite de oliva": "30 ml", "Sal": "1 gr"}', 
         'main', 
         'Fideos con salsa de tomate fresca con aceite de oliva y ajo.',
         'https://imag.bonviveur.com/espaguetis-rojos-con-tomate.jpg'
@@ -37,7 +37,7 @@ INSERT INTO recetas (nombre, ingredientes, duenio, descripcion, imagen) VALUES
 
     (
         'Sopa de Tomate', 
-        '{"tomates": "4", "caldo de pollo": "500ml", "cebolla": "1", "ajo": "2 dientes", "aceite de oliva": "30ml", "sal": "5g", "pimienta": "2g", "crema": "100ml"}', 
+        '{"Tomate": "4 unidad", "Caldo de pollo": "500 ml", "Cebolla": "1 unidad", "Ajo": "2 unidad", "Aceite de oliva": "30 ml", "Sal": "5 gr", "Pimienta": "2 gr", "Crema": "100 ml"}', 
         'main', 
         'Sopa caliente de tomates frescos con cebolla, ajo, caldo de pollo y un toque de crema.',
         'https://assets.tmecosys.com/image/upload/t_web767x639/img/recipe/ras/Assets/7D232720-0F91-41E1-99D7-9DAC5F413404/Derivates/360431A8-187D-4325-B46F-060CC1F6EDE4.jpg'
@@ -45,7 +45,7 @@ INSERT INTO recetas (nombre, ingredientes, duenio, descripcion, imagen) VALUES
 
     (
         'Hamburguesa', 
-        '{"pan de hamburguesa": "1", "carne de res": "200g", "queso cheddar": "1 rebanada", "lechuga": "1 hoja", "tomate": "2 rodajas", "cebolla": "1 rodaja"}', 
+        '{"Pan de hamburguesa": "1 unidad", "Carne": "200 gr", "Queso cheddar": "1 unidad", "Lechuga": "1 unidad", "Tomate": "2 unidad", "Cebolla": "1 unidad"}', 
         'main', 
         'Hamburguesa con carne de res, queso cheddar, lechuga, tomate y cebolla.',
         'https://img.freepik.com/fotos-premium/hamburguesa-lechuga-tomate-cebolla-morada-queso-base-madera-tejido-cuadros-rojos-fondo-negro-espacio-texto_442783-27.jpg'
@@ -53,16 +53,16 @@ INSERT INTO recetas (nombre, ingredientes, duenio, descripcion, imagen) VALUES
 
     (
         'Churrasco', 
-        '{"carne de res": "1 kg", "ajo": "3 dientes", "sal": "5g"}', 
-        'main', 
+        '{"Carne": "1000 gr", "Ajo": "3 unidad", "Sal": "5 gr"}', 
+        'carlosperez23', 
         'Churrasco a la plancha con ajo.',
         'https://osolemio.com.co/181/churrasco-a-la-plancha.jpg'
     ),
 
     (
         'Brownies de Chocolate', 
-        '{"chocolate": "200g", "manteca": "100g", "azúcar": "200g", "harina": "100g", "huevos": "3", "esencia de vainilla": "5ml"}', 
-        'main', 
+        '{"Chocolate": "200 gr", "Manteca": "100 gr", "Azúcar": "200 gr", "Harina": "100 gr", "Huevo": "3 unidad", "Esencia de vainilla": "5 ml"}', 
+        'carlosperez23', 
         'Brownies de chocolate con una textura suave y húmeda.',
         'https://www.recetasderechupete.com/wp-content/uploads/2019/11/Brownie-1200x828.jpg'
     );
