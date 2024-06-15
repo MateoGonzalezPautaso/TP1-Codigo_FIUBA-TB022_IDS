@@ -133,6 +133,9 @@ def cambiar_password(usuario):
 
 @app.route('/borrar_usuario/<usuario>', methods = ['DELETE'])
 def borrar_usuario(usuario):
+    if usuario == "main":
+        return jsonify({"message": "el usuario main no puede borrarse"}), 404
+
     conn = engine.connect()
 
     comida_usuario = f"SELECT nombre FROM recetas WHERE duenio = '{usuario}'"
