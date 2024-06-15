@@ -134,13 +134,28 @@ def cambiar_password(usuario):
 @app.route('/borrar_usuario/<usuario>', methods = ['DELETE'])
 def borrar_usuario(usuario):
     conn = engine.connect()
-    query = f"DELETE FROM usuarios WHERE username = {usuario}" # query para borrar
-    validation_query = f"SELECT * FROM usuarios WHERE username = {usuario}" # query para verificar que el usuario exista
+
+    comida_usuario = f"SELECT nombre FROM recetas WHERE duenio = '{usuario}'"
+    comidas = conn.execute(text(comida_usuario))
+    for row in comidas:
+        comida = row[0]
+
+        cambiar_usuario = f"""UPDATE recetas 
+        SET 
+            duenio = 'main'
+        WHERE nombre = '{comida}';
+        """
+
+        cambio = conn.execute(text(cambiar_usuario))
+        conn.commit()    
+
+    erasement_query = f"DELETE FROM usuarios WHERE username = '{usuario}'" # query para borrar
+    validation_query = f"SELECT * FROM usuarios WHERE username = '{usuario}'" # query para verificar que el usuario exista
     
     try:
         val_result = conn.execute(text(validation_query))
         if val_result.rowcount != 0 :
-            result = conn.execute(text(query))
+            result = conn.execute(text(erasement_query))
             conn.commit()
             conn.close()
         else:
@@ -151,7 +166,6 @@ def borrar_usuario(usuario):
         return jsonify({'message': 'Se ha producido un error' + str(err.__cause__)}), 500
     
     return jsonify({'message': 'se ha eliminado correctamente'}), 202
-
 
 @app.route('/crear_receta', methods = ['POST'])
 def crear_receta():
