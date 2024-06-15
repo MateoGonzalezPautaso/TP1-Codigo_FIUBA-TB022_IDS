@@ -2,6 +2,11 @@
 
 {% block title %} Seleccion de recetas {% endblock %}
 
+{% block style %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/checkbox.css')}}">
+{% endblock %}
+
+
 {% block body %}	
 <header id="gtco-header" class="gtco-cover gtco-cover-sm" role="banner" style="background-image: url(static/images/img_bg_1.jpg)" data-stellar-background-ratio="0.5">
     <div class="overlay"></div>
@@ -30,20 +35,25 @@
             <div class="col-md-12">
                 <div class="col-md-6 animate-box">
                     <h2>Seleccione las recetas:</h2>
-                    <form method="POST" action="{{url_for('seleccion')}}" >
+                    <p>Porfavor, seleccione al menos dos</p>
+                    <form method="POST" action="{{url_for('seleccion')}}" onsubmit="return validateForm()" >
                         <div class="checkbox-container">
                             {% for receta in lista_recetas %}
                                     <input type="checkbox" class="check" name="recetas" value="{{receta}}">
                                     <label class="checkbox-label">{{receta}}</label>
                             {% endfor %}
-                            <input type="submit" value="Enviar" class="btn btn-primary">
                         </div>
+                        <input type="submit" value="Enviar" class="btn btn-primary">
                     </form>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+
+<!-- Script que verifica que por lo menos hayan 2 checkbox seleccionadas-->
+<script src="{{ url_for('static', filename='js/validate-form.js') }}"></script>
 
 
 {% endblock %}

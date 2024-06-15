@@ -64,11 +64,9 @@ def ingredientes(lista_platos):
     except SQLAlchemyError as err: # Agarramos cualquier excepcion que SQLAlchemy pueda tener
         return jsonify(str(err.__cause__)), 500
     
-    data = [] # Armamos una lista para agregar diccionarios con todos los datos
+    data = [] # Armamos una lista para agregregar los diccionaros
     for row in result: # Recorremos las lineas del resultado de la query
-        entity = {}
-        entity['ingredientes'] = row.ingredientes
-        data.append(entity)
+        data.append(json.loads(row.ingredientes))      # Convierte row.ingredientes a un diccionario. Sin esto queda como un str
 
     return jsonify(data), 200 # Devolvemos la informacion obtenida
 
