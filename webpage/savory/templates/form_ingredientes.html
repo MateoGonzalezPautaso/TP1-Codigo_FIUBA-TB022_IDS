@@ -30,7 +30,7 @@
                 <div class="col-md-6 animate-box">
                     <h2>Ingredientes de la receta</h2>
                     <form action="{{url_for('suggest_ingredientes', cantidad=cantidad, nombre=nombre, descripcion=descripcion) }}" id="ingredientesForm" method="post">
-                        
+                    
                         {% for i in range(cantidad|int) %}
                             <div class="row form-group">
                                 <div class="col-md-12">
@@ -52,6 +52,13 @@
                             </div>
                                 <br>
                         {% endfor %}
+
+                        <div class="row form-group">
+                            <div class="col-md-12">
+                                <label for="link_imagen">Link a la imagen:</label>
+                                <input type="text" id="link_imagen" name="link_imagen" required>
+                            </div>
+                        </div>
 
                         <div class="row form-group">
                             <input type="submit" value="Enviar" class="btn btn-primary">

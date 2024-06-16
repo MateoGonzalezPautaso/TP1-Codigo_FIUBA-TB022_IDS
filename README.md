@@ -18,6 +18,29 @@ Nuestro proyecto es una página de recetas de platos de comida. Esta pagina tien
 ## Quiénes lo desarrollan?
 Recetas FIUBA es un proyecto en proceso realizado por estudiantes de la Facultad de Ingeniería de la Universidad de Buenos Aires para la materia de Introducción al Desarrollo de Software.
 
+## Cómo instalar lo necesario para que me funcione la página web?
+Abrir una terminal dentro de la carpeta Webpage/Savory y ejecutar el primer script 1.sh
+
+    bash 1.sh
+
+Una vez activado el entorno virtual hay que ejecutar el segundo script 2.sh
+
+    bash 2.sh
+
+En esta terminal ejecutaremos la api.py mediante
+
+    python3 api.py
+
+Luego abriremos otra terminal en Webpage/Savory, como hicimos anteriormente, y ejecutaremos
+
+    pipenv shell
+
+Para activar el entorno virtual en esta terminal y luego
+
+    python3 app.py
+
+Para poder correr la pagina web
+
 ## Integrantes
 
 ### Agustin Bermudez
