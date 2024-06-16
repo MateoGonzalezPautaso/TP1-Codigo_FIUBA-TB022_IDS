@@ -116,6 +116,80 @@ def get_password(username):
     else:
         return jsonify(row[0]), 200 # Devuelvo un json con el primer (y unico) elemento de la row que es la password
 
+@app.route('/cambiar_password/<usuario>', methods = ['PATCH'])
+def cambiar_password(usuario):
+    '''Permite cambiar la contraseña de un usuario'''
+
+    conn = engine.connect()
+    nuevos_datos = request.get_json()       # Los nuevos datos de la contraseña se envian en el body de la request
+
+    assigned_password = nuevos_datos["password"].encode()
+    assigned_password_bytes = b64encode(assigned_password)
+    assigned_password = assigned_password_bytes.decode()
+
+
+    query = f"""UPDATE usuarios 
+    SET 
+        password = '{assigned_password}'
+    WHERE username = '{usuario}';
+    """
+    
+    validation_query = f"SELECT * FROM usuarios WHERE username = '{usuario}';"
+    try:
+        val_result = conn.execute(text(validation_query))
+        if val_result.rowcount!=0:
+            result = conn.execute(text(query))
+            conn.commit()
+            conn.close()
+        else:
+            conn.close()
+            return jsonify({'message': "el usuario no existe"}), 404
+        
+    except SQLAlchemyError as err:
+        return jsonify({'message': str(err.__cause__)}), 500
+    
+    return jsonify({'message': 'se ha modificado correctamente' + query}), 200
+
+
+
+@app.route('/borrar_usuario/<usuario>', methods = ['DELETE'])
+def borrar_usuario(usuario):
+    if usuario == "main":
+        return jsonify({"message": "el usuario main no puede borrarse"}), 404
+
+    conn = engine.connect()
+
+    comida_usuario = f"SELECT nombre FROM recetas WHERE duenio = '{usuario}'"
+    comidas = conn.execute(text(comida_usuario))
+    for row in comidas:
+        comida = row[0]
+
+        cambiar_usuario = f"""UPDATE recetas 
+        SET 
+            duenio = 'main'
+        WHERE nombre = '{comida}';
+        """
+
+        cambio = conn.execute(text(cambiar_usuario))
+        conn.commit()    
+
+    erasement_query = f"DELETE FROM usuarios WHERE username = '{usuario}'" # query para borrar
+    validation_query = f"SELECT * FROM usuarios WHERE username = '{usuario}'" # query para verificar que el usuario exista
+    
+    try:
+        val_result = conn.execute(text(validation_query))
+        if val_result.rowcount != 0 :
+            result = conn.execute(text(erasement_query))
+            conn.commit()
+            conn.close()
+        else:
+            conn.close()
+            return jsonify({"message": "el usuario no existe"}), 404
+    
+    except SQLAlchemyError as err:
+        return jsonify({'message': 'Se ha producido un error' + str(err.__cause__)}), 500
+    
+    return jsonify({'message': 'se ha eliminado correctamente'}), 202
 
 @app.route('/crear_receta', methods = ['POST'])
 def crear_receta():
